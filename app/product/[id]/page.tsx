@@ -35,145 +35,150 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   }
 
   return (
-    <main style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      {/* Header con botón volver */}
-      <Link 
-        href="/" 
-        style={{ 
-          display: "inline-block", 
-          marginBottom: "1.5rem", 
-          color: "#0070f3",
-          textDecoration: "none",
-          fontSize: "0.95rem"
-        }}
+    // Contenedor principal de la página
+    // px-4: padding horizontal en mobile (1rem)
+    // sm:px-6: aumenta en tablets
+    // lg:px-8: aumenta en desktop
+    // py-8: padding vertical 2rem
+    // max-w-6xl: ancho máximo 1152px
+    // mx-auto: centra horizontalmente
+    <main className="px-4 sm:px-6 lg:px-8 py-8 max-w-6xl mx-auto">
+      {/* Botón para volver al catálogo */}
+      {/* inline-block: se muestra en línea pero se puede estilizar */}
+      {/* mb-6: margen inferior 1.5rem */}
+      {/* text-blue-500: texto azul */}
+      {/* hover:text-blue-600: azul más oscuro al pasar mouse */}
+      {/* text-sm: tamaño pequeño */}
+      {/* transition-colors: anima cambios de color */}
+      <Link
+        href="/"
+        className="inline-block mb-6 text-blue-500 hover:text-blue-600 text-sm transition-colors"
       >
         ← Volver al catálogo
       </Link>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(400px, 100%), 1fr))",
-          gap: "2rem",
-        }}
-      >
-        {/* Columna izquierda: Galería */}
+      {/* Grid responsivo para alinear imagen y contenido */}
+      {/* grid: utiliza CSS Grid */}
+      {/* grid-cols-1: 1 columna en mobile */}
+      {/* md:grid-cols-2: 2 columnas en tablets y arriba */}
+      {/* gap-8: espacio entre columnas (2rem) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Columna izquierda: Galería de imágenes */}
         <div>
           <ProductGallery images={product.images} title={product.title} />
         </div>
 
-        {/* Columna derecha: Info */}
+        {/* Columna derecha: Información del producto */}
         <div>
-          {/* Badge de estado */}
-          <div style={{ marginBottom: "1rem" }}>
+          {/* Badge de estado del producto */}
+          {/* mb-4: margen inferior 1rem */}
+          <div className="mb-4">
             <StateBadge state={product.state} size="md" />
           </div>
 
-          {/* Título */}
-          <h1 style={{ margin: "0 0 0.5rem", fontSize: "2rem" }}>
+          {/* Título del producto */}
+          {/* text-3xl: 30px en mobile */}
+          {/* sm:text-4xl: 36px en tablets y arriba */}
+          {/* font-bold: peso 700 */}
+          {/* mb-2: margen inferior 0.5rem */}
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
             {product.title}
           </h1>
 
-          {/* Condición */}
-          <p style={{ margin: "0 0 1.5rem", color: "var(--text-secondary)", fontSize: "1.1rem" }}>
+          {/* Condición del producto */}
+          {/* text-lg: 18px */}
+          {/* text-gray-600: gris en light mode */}
+          {/* dark:text-gray-400: gris claro en dark mode */}
+          {/* mb-6: margen inferior 1.5rem */}
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             Condición: <strong>{product.condition}</strong>
           </p>
 
-          {/* Precio */}
-          <p style={{ 
-            margin: "0 0 2rem", 
-            fontSize: "2rem", 
-            fontWeight: 700,
-            color: "#0070f3"
-          }}>
+          {/* Precio del producto */}
+          {/* text-4xl: 36px */}
+          {/* font-bold: peso 700 */}
+          {/* text-blue-500: azul */}
+          {/* dark:text-blue-400: azul más claro en dark mode */}
+          {/* mb-8: margen inferior 2rem */}
+          <p className="text-4xl font-bold text-blue-500 dark:text-blue-400 mb-8">
             ${formatPriceCLP(product.price)}
           </p>
 
-          {/* Descripción */}
-          <div style={{ marginBottom: "1.5rem" }}>
-            <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.1rem" }}>
+          {/* Sección de descripción */}
+          {/* mb-6: margen inferior 1.5rem */}
+          <div className="mb-6">
+            {/* Título de sección */}
+            {/* text-xl: 20px */}
+            {/* font-semibold: peso 600 */}
+            {/* mb-2: margen inferior 0.5rem */}
+            <h3 className="text-xl font-semibold mb-2">
               Descripción
             </h3>
-            <p style={{ 
-              margin: 0, 
-              color: "var(--text-tertiary)", 
-              lineHeight: "1.6",
-              whiteSpace: "pre-line"
-            }}>
+            {/* Contenido de descripción */}
+            {/* text-gray-700: gris oscuro */}
+            {/* dark:text-gray-300: gris claro en dark */}
+            {/* leading-relaxed: aumenta el espaciado entre líneas (1.625) */}
+            {/* whitespace-pre-line: preserva saltos de línea del texto */}
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
               {product.description}
             </p>
           </div>
 
-          {/* Medidas */}
-          <div style={{ marginBottom: "2rem" }}>
-            <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.1rem" }}>
+          {/* Sección de medidas */}
+          {/* mb-8: margen inferior 2rem */}
+          <div className="mb-8">
+            {/* Título de sección */}
+            <h3 className="text-xl font-semibold mb-2">
               Medidas / Talla
             </h3>
-            <p style={{ 
-              margin: 0, 
-              color: "var(--text-tertiary)", 
-              lineHeight: "1.6",
-              whiteSpace: "pre-line"
-            }}>
+            {/* Contenido de medidas */}
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
               {product.measurements}
             </p>
           </div>
 
-          {/* Botones de contacto WhatsApp */}
-          <div style={{ marginTop: "2rem" }}>
-            <p style={{ margin: "0 0 1rem", fontWeight: 600, fontSize: "1rem" }}>
+          {/* Sección de contacto por WhatsApp */}
+          {/* mt-8: margen superior 2rem */}
+          <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+            {/* Texto invitando a contactar */}
+            {/* font-semibold: peso 600 */}
+            {/* text-lg: 18px */}
+            {/* mb-4: margen inferior 1rem */}
+            <p className="font-semibold text-lg mb-4">
               ¿Te interesa? Contacta por WhatsApp:
             </p>
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            {/* Contenedor con los dos botones */}
+            {/* flex: utiliza flexbox */}
+            {/* flex-col: una columna (vertical) en mobile */}
+            {/* sm:flex-row: horizontal en tablets y arriba */}
+            {/* gap-3: espacio entre botones (0.75rem) */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              {/* Botón WhatsApp para Tito */}
+              {/* inline-flex: flexbox inline */}
+              {/* items-center: centra verticalmente */}
+              {/* gap-2: espacio entre emoji y texto */}
+              {/* px-4: padding horizontal 1rem */}
+              {/* py-2: padding vertical 0.5rem */}
+              {/* bg-green-500: fondo verde WhatsApp */}
+              {/* hover:bg-green-600: verde más oscuro al pasar mouse */}
+              {/* text-white: texto blanco */}
+              {/* font-semibold: peso 600 */}
+              {/* rounded-lg: bordes redondeados */}
+              {/* transition-colors: anima cambios de color */}
               <a
                 href={`https://wa.me/56991594818?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.75rem 1.5rem",
-                  background: "#25D366",
-                  color: "white",
-                  borderRadius: "8px",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  transition: "background 0.2s",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#20BA5A";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "#25D366";
-                }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
               >
                 💬 Escribir a Tito
               </a>
+              {/* Botón WhatsApp para Nati - mismos estilos que Tito */}
               <a
                 href={`https://wa.me/56996990301?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.75rem 1.5rem",
-                  background: "#25D366",
-                  color: "white",
-                  borderRadius: "8px",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  transition: "background 0.2s",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#20BA5A";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "#25D366";
-                }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
               >
                 💬 Escribir a Nati
               </a>

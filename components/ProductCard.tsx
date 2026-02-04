@@ -8,65 +8,80 @@ import type { Product } from "@/data/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <Link 
-      href={`/product/${product.id}`} 
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
+    // Link a la página de detalle del producto
+    // href: construye la URL dinámicamente con el ID del producto
+    <Link href={`/product/${product.id}`}>
       <div
-        style={{
-          border: "1px solid var(--border)",
-          borderRadius: "12px",
-          padding: "1rem",
-          position: "relative",
-          overflow: "hidden",
-          background: "var(--background)",
-          cursor: "pointer",
-          transition: "box-shadow 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = "none";
-        }}
+        // Contenedor principal de la tarjeta
+        // border: borde gris sutil
+        // border-gray-200: color del borde en light mode
+        // dark:border-gray-700: borde más oscuro en dark mode
+        // rounded-lg: bordes redondeados (0.5rem)
+        // p-4: padding interno 1rem
+        // relative: posicionamiento relativo para el badge absolute
+        // overflow-hidden: oculta contenido que se sale del contenedor
+        // bg-white: fondo blanco
+        // dark:bg-gray-900: fondo muy oscuro en dark mode
+        // cursor-pointer: cambia el cursor a manita
+        // transition-shadow: anima cambios de sombra
+        // hover:shadow-lg: sombra grande al pasar mouse
+        className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 relative overflow-hidden bg-white dark:bg-gray-900 cursor-pointer transition-shadow hover:shadow-lg"
       >
-        {/* Badge */}
-        <div
-          style={{
-            position: "absolute",
-            top: "12px",
-            left: "12px",
-            zIndex: 1,
-          }}
-        >
+        {/* Badge con el estado del producto */}
+        {/* absolute: posicionamiento absoluto */}
+        {/* top-3: 0.75rem desde la parte superior */}
+        {/* left-3: 0.75rem desde la izquierda */}
+        {/* z-10: aparece encima de otros elementos */}
+        <div className="absolute top-3 left-3 z-10">
           <StateBadge state={product.state} />
         </div>
 
-        {/* Imagen */}
-        <div style={{ position: "relative", width: "100%", height: "160px", marginBottom: "0.75rem" }}>
+        {/* Contenedor de la imagen */}
+        {/* relative: para que funcione el "fill" de Next/Image */}
+        {/* w-full: ancho 100% */}
+        {/* h-40: altura 160px */}
+        {/* mb-3: margen inferior 0.75rem */}
+        <div className="relative w-full h-40 mb-3">
+          {/* Imagen del producto */}
+          {/* fill: la imagen llena todo el contenedor padre */}
+          {/* sizes: indica qué tamaño de imagen usar según el viewport */}
+          {/* object-cover: la imagen cubre todo el espacio sin distorsionarse */}
+          {/* rounded-lg: bordes redondeados */}
           <Image
             src={product.images[0]}
             alt={product.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{
-              objectFit: "cover",
-              borderRadius: "8px",
-            }}
+            className="object-cover rounded-lg"
           />
         </div>
 
-        {/* Info */}
-        <h2 style={{ margin: "0 0 0.25rem", fontSize: "1.05rem" }}>
+        {/* Título del producto */}
+        {/* text-base: tamaño 16px */}
+        {/* font-semibold: peso 600 */}
+        {/* mb-1: margen inferior pequeño (0.25rem) */}
+        {/* line-clamp-2: máximo 2 líneas, corta con ... si es muy largo */}
+        <h2 className="text-base font-semibold mb-1 line-clamp-2">
           {product.title}
         </h2>
 
-        <p style={{ margin: "0 0 0.5rem", color: "var(--text-secondary)" }}>
+        {/* Condición del producto */}
+        {/* text-sm: tamaño pequeño (14px) */}
+        {/* text-gray-600: gris en light mode */}
+        {/* dark:text-gray-400: gris claro en dark mode */}
+        {/* mb-2: margen inferior 0.5rem */}
+        {/* line-clamp-1: máximo 1 línea */}
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-1">
           {product.condition}
         </p>
 
-        <p style={{ margin: 0, fontSize: "1.1rem" }}>
-          <strong>${formatPriceCLP(product.price)}</strong>
+        {/* Precio */}
+        {/* text-lg: tamaño 18px */}
+        {/* font-bold: peso 700 */}
+        {/* text-gray-900: texto oscuro */}
+        {/* dark:text-white: texto blanco en dark mode */}
+        <p className="text-lg font-bold text-gray-900 dark:text-white">
+          ${formatPriceCLP(product.price)}
         </p>
       </div>
     </Link>
