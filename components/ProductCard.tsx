@@ -4,7 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPriceCLP } from "@/lib/product-ui";
 import StateBadge from "@/components/StateBadge";
-import type { Product } from "@/data/products";
+
+type Product = {
+  id: string;
+  title: string;
+  description: string;
+  state: string;
+  condition: string;
+  measurements: string;
+  price: number;
+  images: string[];
+};
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
