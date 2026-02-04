@@ -3,7 +3,7 @@ import products from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
 export const metadata: Metadata = {
-  title: "Catálogo de Productos",
+  title: "Nati y Tito venden sus cosas :D",
   description: "Explora nuestro catálogo de productos disponibles",
 };
 
@@ -14,8 +14,14 @@ export default function Home() {
 
   return (
     <main style={{ padding: "1rem 2rem", maxWidth: "1400px", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "2rem", marginBottom: "1.5rem" }}>
-        Catálogo de Productos
+      <h1 style={{ 
+        fontSize: "2.5rem", 
+        marginBottom: "1.5rem",
+        fontWeight: 700,
+        color: "#1a1a1a",
+        letterSpacing: "-0.02em"
+      }}>
+        Nati y Tito venden sus cosas :D
       </h1>
 
       {availableProducts.length === 0 ? (
