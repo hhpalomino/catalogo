@@ -20,9 +20,9 @@ export default function NotFound() {
       {/* md:text-7xl: 84px en tablets */}
       {/* font-bold: peso 700 */}
       {/* mb-4: margen inferior 1rem */}
-      {/* text-blue-500: azul */}
-      {/* dark:text-blue-400: azul más claro en dark mode */}
-      <h1 className="text-6xl md:text-7xl font-bold mb-4 text-blue-500 dark:text-blue-400">
+      {/* text-emerald-600: verde sage */}
+      {/* dark:text-emerald-400: verde sage más claro en dark mode */}
+      <h1 className="text-6xl md:text-7xl font-bold mb-4 text-emerald-600 dark:text-emerald-400">
         404
       </h1>
 
@@ -36,29 +36,29 @@ export default function NotFound() {
       </h2>
 
       {/* Texto descriptivo */}
-      {/* text-gray-600: gris en light mode */}
-      {/* dark:text-gray-400: gris claro en dark mode */}
+      {/* text-slate-600: gris en light mode */}
+      {/* dark:text-slate-400: gris claro en dark mode */}
       {/* mb-8: margen inferior 2rem */}
       {/* max-w-md: ancho máximo 448px */}
-      <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
+      <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-md">
         Lo sentimos, no pudimos encontrar el producto que estás buscando.
         Puede que haya sido eliminado o nunca existió.
       </p>
 
       {/* Botón para volver al catálogo */}
       {/* inline-block: se muestra en línea pero se puede estilizar */}
-      {/* px-6: padding horizontal 1.5rem */}
-      {/* py-3: padding vertical 0.75rem */}
-      {/* bg-blue-500: fondo azul */}
-      {/* hover:bg-blue-600: azul más oscuro al pasar mouse */}
-      {/* active:bg-blue-700: azul aún más oscuro al hacer click */}
-      {/* text-white: texto blanco */}
-      {/* font-semibold: peso 600 */}
-      {/* rounded-lg: bordes redondeados */}
-      {/* transition-colors: anima cambios de color */}
+      {{/* px-6: padding horizontal 1.5rem */}
+      {{/* py-3: padding vertical 0.75rem */}
+      {{/* bg-emerald-600: fondo verde sage */}
+      {{/* hover:bg-emerald-700: verde sage oscuro al pasar mouse */}
+      {{/* active:bg-emerald-800: verde sage aún más oscuro al hacer click */}
+      {{/* text-white: texto blanco */}
+      {{/* font-semibold: peso 600 */}
+      {{/* rounded-lg: bordes redondeados */}
+      {{/* transition-colors: anima cambios de color */}
       <Link
         href="/"
-        className="inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+        className="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold rounded-lg transition-colors"
       >
         Volver al catálogo
       </Link>

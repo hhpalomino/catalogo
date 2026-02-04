@@ -74,24 +74,36 @@ export default function Home() {
     // md:py-12: aumenta a 3rem en tablets
     // max-w-7xl: ancho máximo de 80rem (1280px)
     // mx-auto: centra horizontalmente
-    <main className="px-4 sm:px-6 lg:px-8 py-8 md:py-12 max-w-7xl mx-auto">
-      {/* Título principal */}
-      {/* text-4xl: 36px en mobile */}
-      {/* sm:text-5xl: 48px en tablets y arriba */}
-      {/* font-bold: peso 700 */}
-      {/* mb-2: margen inferior 0.5rem */}
-      {/* tracking-tight: reduce el espaciado entre letras (-0.025em) */}
-      <h1 className="text-4xl sm:text-5xl font-bold mb-2 tracking-tight">
-        Nati y Tito venden sus cosas :D
-      </h1>
-      {/* Subtítulo descriptivo */}
-      {/* text-gray-600: color gris en light mode */}
-      {/* dark:text-gray-400: color gris más claro en dark mode */}
-      {/* mb-8: margen inferior 2rem */}
-      {/* text-lg: 18px font size */}
-      <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">
-        Descubre nuestros productos disponibles
-      </p>
+    <main className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Header con gradient de fondo - diseño profesional */}
+      {/* -mx-4: extiende el fondo más allá de los márgenes */}
+      {/* px-4 sm:px-6 lg:px-8: padding interno responsive */}
+      {/* py-12: padding vertical 3rem */}
+      {/* bg-gradient-to-r: gradiente de izquierda a derecha */}
+      {/* from-slate-50 to-slate-100: gradiente gris claro a más claro */}
+      {/* dark:from-slate-950 dark:to-slate-900: gradiente oscuro en dark mode */}
+      {/* border-b border-slate-200: borde inferior sutil */}
+      {/* dark:border-slate-800: borde más oscuro en dark */}
+      {/* mb-12: margen inferior 3rem */}
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800 mb-12">
+        {/* Título principal con gradiente verde sage a naranja */}
+        {/* text-4xl sm:text-5xl lg:text-6xl: tamaños responsive (36px → 60px) */}
+        {/* font-bold: peso 700 */}
+        {/* tracking-tight: reduce espaciado entre letras */}
+        {/* bg-clip-text: permite aplicar gradiente al texto */}
+        {/* bg-gradient-to-r from-emerald-600 to-orange-500: verde sage a naranja */}
+        {/* text-transparent: hace el texto transparente para mostrar el gradiente */}
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight bg-clip-text bg-gradient-to-r from-emerald-600 to-orange-500 dark:from-emerald-400 dark:to-orange-400 text-transparent">
+          Nati y Tito
+        </h1>
+        {/* Subtítulo mejorado */}
+        {/* text-lg sm:text-xl: tamaño responsive (18px → 20px) */}
+        {/* text-slate-700 dark:text-slate-300: color responsive para dark mode */}
+        {/* font-medium: peso 500 */}
+        <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-300 font-medium">
+          Venden sus cosas
+        </p>
+      </div>
 
       {/* Sección de botones de WhatsApp */}
       {/* flex: utiliza flexbox para layout */}
@@ -99,32 +111,34 @@ export default function Home() {
       {/* gap-3: espacio entre botones (0.75rem) */}
       {/* mb-8: margen inferior 2rem */}
       <div className="mb-8 flex flex-wrap gap-3">
-        {/* Botón de WhatsApp para Tito */}
+        {/* Botón de WhatsApp para Tito - azul profesional */}
         {/* inline-flex: flexbox inline para alinear items */}
         {/* items-center: centra verticalmente los items (el emoji y el texto) */}
         {/* gap-2: espacio entre icon y texto (0.5rem) */}
         {/* px-4: padding horizontal 1rem */}
         {/* py-2: padding vertical 0.5rem */}
-        {/* bg-green-500: color de fondo verde (WhatsApp) */}
-        {/* hover:bg-green-600: verde más oscuro al pasar el mouse */}
+        {/* bg-blue-500: color azul profesional (no verde) */}
+        {/* hover:bg-blue-600: azul más oscuro al pasar el mouse */}
         {/* text-white: texto blanco */}
         {/* font-semibold: peso 600 */}
         {/* rounded-lg: bordes redondeados (0.5rem) */}
+        {/* shadow-md: sombra mediana */}
+        {/* hover:shadow-lg: sombra grande al pasar el mouse */}
         {/* transition-colors: anima cambios de color suavemente */}
         <a
           href="https://wa.me/56991594818?text=Hola%20Tito%2C%20te%20escribo%20desde%20tu%20cat%C3%A1logo%20de%20productos"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
         >
           💬 WhatsApp Tito
         </a>
-        {/* Botón de WhatsApp para Nati - mismos estilos que Tito */}
+        {/* Botón de WhatsApp para Nati - mismo color verde sage */}
         <a
           href="https://wa.me/56996990301?text=Hola%20Nati%2C%20te%20escribo%20desde%20tu%20cat%C3%A1logo%20de%20productos"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
         >
           💬 WhatsApp Nati
         </a>
@@ -139,25 +153,25 @@ export default function Home() {
         {/* px-4: padding horizontal 1rem */}
         {/* py-3: padding vertical 0.75rem */}
         {/* border-2: borde de 2px */}
-        {/* border-gray-300: borde gris claro */}
-        {/* dark:border-gray-600: borde gris más oscuro en dark mode */}
+        {/* border-slate-300: borde gris claro */}
+        {/* dark:border-slate-600: borde gris más oscuro en dark mode */}
         {/* rounded-lg: bordes redondeados */}
         {/* bg-white: fondo blanco */}
-        {/* dark:bg-gray-900: fondo muy oscuro en dark mode */}
-        {/* text-gray-900: texto oscuro */}
+        {/* dark:bg-slate-900: fondo muy oscuro en dark mode */}
+        {/* text-slate-900: texto oscuro */}
         {/* dark:text-white: texto blanco en dark mode */}
-        {/* placeholder-gray-500: color del placeholder gris */}
-        {/* dark:placeholder-gray-400: placeholder más claro en dark */}
+        {/* placeholder-slate-500: color del placeholder gris */}
+        {/* dark:placeholder-slate-400: placeholder más claro en dark */}
         {/* focus:outline-none: quita el outline por defecto del navegador */}
-        {/* focus:border-blue-500: borde azul al hacer focus */}
-        {/* dark:focus:border-blue-400: azul más claro en dark mode */}
+        {/* focus:border-emerald-500: borde verde sage al hacer focus */}
+        {/* dark:focus:border-emerald-400: verde sage claro en dark mode */}
         {/* transition-colors: anima cambios de color */}
         <input
           type="text"
           placeholder="🔍 Buscar productos..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full max-w-md px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+          className="w-full max-w-md px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
         />
       </div>
 
@@ -167,10 +181,10 @@ export default function Home() {
         {/* Etiqueta para los filtros */}
         {/* text-sm: tamaño pequeño (14px) */}
         {/* font-medium: peso 500 */}
-        {/* text-gray-700: texto gris oscuro */}
-        {/* dark:text-gray-300: texto gris claro en dark */}
+        {/* text-slate-700: texto gris oscuro */}
+        {/* dark:text-slate-300: texto gris claro en dark */}
         {/* mb-3: margen inferior 0.75rem */}
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
           Filtrar por estado:
         </p>
         {/* Contenedor con flex para mostrar botones en fila */}
@@ -187,27 +201,27 @@ export default function Home() {
             // transition-all: anima todos los cambios suavemente
             // Nota: Los estilos entre llaves son condicionales:
             // Si el filtro está activo (selectedFilter === filter.id):
-            //   - bg-blue-500: fondo azul
-            //   - hover:bg-blue-600: azul más oscuro al pasar mouse
+            //   - bg-emerald-600: fondo verde sage
+            //   - hover:bg-emerald-700: verde más oscuro al pasar mouse
             //   - text-white: texto blanco
             //   - shadow-md: sombra mediana
             // Si NO está activo:
-            //   - bg-gray-200: fondo gris claro
-            //   - dark:bg-gray-700: fondo gris en dark
-            //   - text-gray-900: texto oscuro
-            //   - dark:text-gray-100: texto claro en dark
-            //   - hover:bg-gray-300: gris más oscuro al pasar mouse
-            //   - dark:hover:bg-gray-600: gris más claro en dark al pasar
+            //   - bg-slate-200: fondo gris claro
+            //   - dark:bg-slate-700: fondo gris en dark
+            //   - text-slate-900: texto oscuro
+            //   - dark:text-slate-100: texto claro en dark
+            //   - hover:bg-slate-300: gris más oscuro al pasar mouse
+            //   - dark:hover:bg-slate-600: gris más claro en dark al pasar
             <button
               key={filter.id}
               onClick={() => setSelectedFilter(filter.id)}
               className={`
                 px-4 py-2 rounded-lg font-medium transition-all
                 ${
-                  // Si el filtro está activo, mostrar en azul, si no, en gris
+                  // Si el filtro está activo, mostrar en verde sage, si no, en gris
                   selectedFilter === filter.id
-                    ? "bg-blue-500 hover:bg-blue-600 text-white shadow-md"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md"
+                    : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
                 }
               `}
             >

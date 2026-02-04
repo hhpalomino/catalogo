@@ -153,32 +153,34 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             {/* sm:flex-row: horizontal en tablets y arriba */}
             {/* gap-3: espacio entre botones (0.75rem) */}
             <div className="flex flex-col sm:flex-row gap-3">
-              {/* Botón WhatsApp para Tito */}
+              {/* Botón WhatsApp para Tito - azul profesional */}
               {/* inline-flex: flexbox inline */}
               {/* items-center: centra verticalmente */}
               {/* gap-2: espacio entre emoji y texto */}
               {/* px-4: padding horizontal 1rem */}
               {/* py-2: padding vertical 0.5rem */}
-              {/* bg-green-500: fondo verde WhatsApp */}
-              {/* hover:bg-green-600: verde más oscuro al pasar mouse */}
+              {/* bg-blue-500: fondo azul profesional */}
+              {/* hover:bg-blue-600: azul más oscuro al pasar mouse */}
               {/* text-white: texto blanco */}
               {/* font-semibold: peso 600 */}
               {/* rounded-lg: bordes redondeados */}
+              {/* shadow-md: sombra mediana */}
+              {/* hover:shadow-lg: sombra grande al pasar mouse */}
               {/* transition-colors: anima cambios de color */}
               <a
                 href={`https://wa.me/56991594818?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
               >
                 💬 Escribir a Tito
               </a>
-              {/* Botón WhatsApp para Nati - mismos estilos que Tito */}
+              {/* Botón WhatsApp para Nati - verde sage */}
               <a
                 href={`https://wa.me/56996990301?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
               >
                 💬 Escribir a Nati
               </a>
