@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </h1>
 
           {/* Condición */}
-          <p style={{ margin: "0 0 1.5rem", color: "#666", fontSize: "1.1rem" }}>
+          <p style={{ margin: "0 0 1.5rem", color: "var(--text-secondary)", fontSize: "1.1rem" }}>
             Condición: <strong>{product.condition}</strong>
           </p>
 
@@ -96,7 +96,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </h3>
             <p style={{ 
               margin: 0, 
-              color: "#444", 
+              color: "var(--text-tertiary)", 
               lineHeight: "1.6",
               whiteSpace: "pre-line"
             }}>
@@ -105,18 +105,79 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Medidas */}
-          <div style={{ marginBottom: "1.5rem" }}>
+          <div style={{ marginBottom: "2rem" }}>
             <h3 style={{ margin: "0 0 0.5rem", fontSize: "1.1rem" }}>
               Medidas / Talla
             </h3>
             <p style={{ 
               margin: 0, 
-              color: "#444", 
+              color: "var(--text-tertiary)", 
               lineHeight: "1.6",
               whiteSpace: "pre-line"
             }}>
               {product.measurements}
             </p>
+          </div>
+
+          {/* Botones de contacto WhatsApp */}
+          <div style={{ marginTop: "2rem" }}>
+            <p style={{ margin: "0 0 1rem", fontWeight: 600, fontSize: "1rem" }}>
+              ¿Te interesa? Contacta por WhatsApp:
+            </p>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <a
+                href={`https://wa.me/56991594818?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem 1.5rem",
+                  background: "#25D366",
+                  color: "white",
+                  borderRadius: "8px",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  transition: "background 0.2s",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#20BA5A";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#25D366";
+                }}
+              >
+                💬 Escribir a Tito
+              </a>
+              <a
+                href={`https://wa.me/56996990301?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.75rem 1.5rem",
+                  background: "#25D366",
+                  color: "white",
+                  borderRadius: "8px",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  transition: "background 0.2s",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#20BA5A";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#25D366";
+                }}
+              >
+                💬 Escribir a Nati
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -14,12 +14,12 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       <div
         style={{
-          border: "1px solid #ddd",
+          border: "1px solid var(--border)",
           borderRadius: "12px",
           padding: "1rem",
           position: "relative",
           overflow: "hidden",
-          background: "white",
+          background: "var(--background)",
           cursor: "pointer",
           transition: "box-shadow 0.2s",
         }}
@@ -61,7 +61,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.title}
         </h2>
 
-        <p style={{ margin: "0 0 0.5rem", color: "#666" }}>
+        <p style={{ margin: "0 0 0.5rem", color: "var(--text-secondary)" }}>
           {product.condition}
         </p>
 
