@@ -1,49 +1,68 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 
 export default function NotFound() {
-  const [isHover, setIsHover] = useState(false);
-
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "60vh",
-        padding: "2rem",
-        textAlign: "center",
-      }}
-    >
-      <h1 style={{ fontSize: "4rem", margin: "0 0 1rem", color: "#0070f3" }}>
+    // Contenedor principal - página 404
+    // flex: utiliza flexbox para centrar
+    // flex-col: alinea items verticalmente
+    // items-center: centra horizontalmente
+    // justify-center: centra verticalmente
+    // min-h-screen: altura mínima de todo el viewport
+    // md:min-h-[60vh]: altura mínima 60vh en tablets y arriba (deja espacio para header)
+    // px-4: padding horizontal 1rem
+    // py-8: padding vertical 2rem
+    // text-center: centra el texto
+    <main className="flex flex-col items-center justify-center min-h-screen md:min-h-[60vh] px-4 py-8 text-center">
+      {/* Número 404 */}
+      {/* text-6xl: 60px */}
+      {/* md:text-7xl: 84px en tablets */}
+      {/* font-bold: peso 700 */}
+      {/* mb-4: margen inferior 1rem */}
+      {/* text-blue-500: azul */}
+      {/* dark:text-blue-400: azul más claro en dark mode */}
+      <h1 className="text-6xl md:text-7xl font-bold mb-4 text-blue-500 dark:text-blue-400">
         404
       </h1>
-      <h2 style={{ fontSize: "1.5rem", margin: "0 0 1rem", fontWeight: 600 }}>
+
+      {/* Título "Producto no encontrado" */}
+      {/* text-2xl: 24px */}
+      {/* md:text-3xl: 30px en tablets */}
+      {/* font-semibold: peso 600 */}
+      {/* mb-4: margen inferior 1rem */}
+      <h2 className="text-2xl md:text-3xl font-semibold mb-4">
         Producto no encontrado
       </h2>
-      <p style={{ color: "#666", marginBottom: "2rem", maxWidth: "400px" }}>
+
+      {/* Texto descriptivo */}
+      {/* text-gray-600: gris en light mode */}
+      {/* dark:text-gray-400: gris claro en dark mode */}
+      {/* mb-8: margen inferior 2rem */}
+      {/* max-w-md: ancho máximo 448px */}
+      <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md">
         Lo sentimos, no pudimos encontrar el producto que estás buscando.
         Puede que haya sido eliminado o nunca existió.
       </p>
+
+      {/* Botón para volver al catálogo */}
+      {/* inline-block: se muestra en línea pero se puede estilizar */}
+      {/* px-6: padding horizontal 1.5rem */}
+      {/* py-3: padding vertical 0.75rem */}
+      {/* bg-blue-500: fondo azul */}
+      {/* hover:bg-blue-600: azul más oscuro al pasar mouse */}
+      {/* active:bg-blue-700: azul aún más oscuro al hacer click */}
+      {/* text-white: texto blanco */}
+      {/* font-semibold: peso 600 */}
+      {/* rounded-lg: bordes redondeados */}
+      {/* transition-colors: anima cambios de color */}
       <Link
         href="/"
-        style={{
-          display: "inline-block",
-          padding: "0.75rem 1.5rem",
-          background: isHover ? "#0051cc" : "#0070f3",
-          color: "white",
-          borderRadius: "8px",
-          fontWeight: 600,
-          transition: "background 0.2s",
-        }}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+        className="inline-block px-6 py-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
       >
         Volver al catálogo
       </Link>
     </main>
   );
 }
+
