@@ -2,16 +2,25 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import ImageSkeleton from "@/components/ImageSkeleton";
 
 type ProductGalleryProps = {
-  images: string[];
+  images: Array<{
+    id: string;
+    imageUrl: string;
+    isMain: boolean;
+    displayOrder: number;
+  }>;
   title: string;
 };
 
 export default function ProductGallery({ images, title }: ProductGalleryProps) {
+  const placeholderSrc = "/images/placeholder.svg";
   // Estado que guarda el índice de la imagen seleccionada
   // Comienza en 0 (la primera imagen)
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isLoadingImage, setIsLoadingImage] = useState(true);
+  const safeSelectedIndex = selectedImage >= images.length ? 0 : selectedImage;
 
   // Si no hay imágenes, mostrar un mensaje
   if (!images || images.length === 0) {
@@ -30,6 +39,13 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
       {/* h-96: altura 384px (24rem) */}
       {/* mb-4: margen inferior 1rem */}
       <div className="relative w-full h-96 mb-4">
+        {/* Skeleton loader mientras la imagen se carga */}
+        {isLoadingImage && images[safeSelectedIndex] && (
+          <div className="absolute inset-0 z-10 rounded-lg overflow-hidden">
+            <ImageSkeleton />
+          </div>
+        )}
+
         {/* Imagen principal que cambia al seleccionar un thumbnail */}
         {/* fill: la imagen llena todo el contenedor padre */}
         {/* sizes: especifica qué tamaño de imagen usar según el viewport */}
@@ -38,12 +54,14 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
         {/* border: borde sutil */}
         {/* priority: carga esta imagen primero (optimización) */}
         <Image
-          src={images[selectedImage]}
-          alt={`${title} - imagen ${selectedImage + 1}`}
+          src={images[safeSelectedIndex]?.imageUrl || placeholderSrc}
+          alt={`${title} - imagen ${safeSelectedIndex + 1}`}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover rounded-lg border border-gray-300 dark:border-gray-600"
           priority
+          onLoadingComplete={() => setIsLoadingImage(false)}
+          onError={() => setIsLoadingImage(false)}
         />
       </div>
 
@@ -77,13 +95,16 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             // hover:opacity-100: opaco al pasar mouse
             <button
               key={index}
-              onClick={() => setSelectedImage(index)}
+              onClick={() => {
+                setIsLoadingImage(true);
+                setSelectedImage(index);
+              }}
               className={`
                 relative w-20 h-20 p-0 rounded-lg overflow-hidden cursor-pointer
                 bg-transparent transition-all
                 ${
                   // Si es la imagen seleccionada
-                  selectedImage === index
+                  safeSelectedIndex === index
                     ? "border-2 border-blue-500 dark:border-blue-400 opacity-100"
                     : "border-2 border-gray-300 dark:border-gray-600 opacity-60 hover:opacity-100"
                 }
@@ -93,7 +114,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
               {/* fill: llena todo el botón */}
               {/* object-cover: cubre sin distorsionar */}
               <Image
-                src={img}
+                src={img.imageUrl || placeholderSrc}
                 alt={`${title} thumbnail ${index + 1}`}
                 fill
                 sizes="80px"
@@ -106,4 +127,3 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
     </div>
   );
 }
-

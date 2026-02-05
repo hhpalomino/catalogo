@@ -1,13 +1,40 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-// Datos de los 50 productos existentes
-const productsData = [
+// Create admin user if it doesn't exist
+async function seedAdmin() {
+  const adminExists = await prisma.user.findUnique({
+    where: { username: "admin" },
+  });
+
+  if (!adminExists) {
+    const hashedPassword = await bcrypt.hash("admin", 10);
+    await prisma.user.create({
+      data: {
+        username: "admin",
+        email: "admin@example.com",
+        passwordHash: hashedPassword,
+        role: "admin",
+      },
+    });
+    console.log("✓ Admin user created (username: admin, password: admin)");
+  } else {
+    console.log("✓ Admin user already exists");
+  }
+}
+
+// Datos de productos - ahora se crean desde la interfaz de admin
+// const productsData = [
+/*
+  {...}];
   {
     title: "Urban Sneakers",
     description: "Urban sneakers with very little use.\nComfortable and clean.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "Size 42",
     price: 45000,
@@ -16,7 +43,9 @@ const productsData = [
   {
     title: "Black Jacket",
     description: "Waterproof jacket.\nUsed but in good condition.",
-    state: "sold",
+    estado: "agotado",
+    entregado: true,
+    pagado: true,
     condition: "Good",
     measurements: "Size M",
     price: 60000,
@@ -25,7 +54,9 @@ const productsData = [
   {
     title: "Outdoor Backpack",
     description: "30L backpack.\nIdeal for hiking.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Very good",
     measurements: "30 liters",
     price: 38000,
@@ -34,7 +65,9 @@ const productsData = [
   {
     title: "Vintage Camera",
     description: "Classic film camera from the 1980s.\nFully functional.",
-    state: "reserved",
+    estado: "pendiente",
+    entregado: false,
+    pagado: false,
     condition: "Good",
     measurements: "20cm x 15cm",
     price: 75000,
@@ -43,7 +76,9 @@ const productsData = [
   {
     title: "Leather Wallet",
     description: "Genuine leather wallet.\nMultiple compartments.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Very good",
     measurements: "12cm x 10cm",
     price: 25000,
@@ -52,8 +87,10 @@ const productsData = [
   {
     title: "Running Shoes",
     description: "Professional running shoes.\nBarely worn.",
-    state: "paid",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "Size 41",
     price: 55000,
     images: "/images/running.jpg"
@@ -61,7 +98,9 @@ const productsData = [
   {
     title: "Desk Lamp",
     description: "LED desk lamp.\nAdjustable brightness.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "45cm height",
     price: 28000,
@@ -70,7 +109,9 @@ const productsData = [
   {
     title: "Wireless Headphones",
     description: "Bluetooth headphones with noise cancellation.\nLike new.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "Standard",
     price: 120000,
@@ -79,7 +120,9 @@ const productsData = [
   {
     title: "Coffee Table",
     description: "Modern coffee table.\nWood and metal design.",
-    state: "delivered",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "100cm x 60cm x 45cm",
     price: 150000,
@@ -88,7 +131,9 @@ const productsData = [
   {
     title: "Bicycle Helmet",
     description: "Safety bike helmet.\nVery good condition.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Very good",
     measurements: "Standard size",
     price: 35000,
@@ -97,7 +142,9 @@ const productsData = [
   {
     title: "Skateboard",
     description: "Professional skateboard.\nGood condition.",
-    state: "sold",
+    estado: "agotado",
+    entregado: true,
+    pagado: true,
     condition: "Good",
     measurements: "Standard",
     price: 65000,
@@ -106,7 +153,9 @@ const productsData = [
   {
     title: "Wall Clock",
     description: "Minimalist wall clock.\nQuartz mechanism.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "30cm diameter",
     price: 18000,
@@ -115,8 +164,10 @@ const productsData = [
   {
     title: "Portable Speaker",
     description: "Waterproof portable speaker.\nGreat sound.",
-    state: "available",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "15cm x 10cm",
     price: 48000,
     images: "/images/speaker.jpg"
@@ -124,7 +175,9 @@ const productsData = [
   {
     title: "Yoga Mat",
     description: "Non-slip yoga mat.\nGood condition.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Very good",
     measurements: "180cm x 60cm",
     price: 22000,
@@ -133,8 +186,10 @@ const productsData = [
   {
     title: "Smart Watch",
     description: "Fitness tracker smartwatch.\nBarely used.",
-    state: "reserved",
-    condition: "Like new",
+    estado: "pendiente",
+    entregado: false,
+    pagado: false,
+    condition: "Excellent",
     measurements: "Standard",
     price: 89000,
     images: "/images/smartwatch.jpg"
@@ -142,7 +197,9 @@ const productsData = [
   {
     title: "Vintage Vinyl Record",
     description: "Classic rock vinyl record.\nGreat condition.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "Standard LP",
     price: 32000,
@@ -151,8 +208,10 @@ const productsData = [
   {
     title: "Board Game",
     description: "Modern strategy board game.\nComplete set.",
-    state: "available",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
+    condition: "Excellent",
     measurements: "30cm x 20cm x 8cm",
     price: 42000,
     images: "/images/boardgame.jpg"
@@ -160,7 +219,9 @@ const productsData = [
   {
     title: "Phone Stand",
     description: "Adjustable phone stand.\nStainless steel.",
-    state: "paid",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "15cm height",
     price: 12000,
@@ -169,7 +230,9 @@ const productsData = [
   {
     title: "Portable Hard Drive",
     description: "1TB external hard drive.\nFully functional.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Very good",
     measurements: "12cm x 8cm x 2cm",
     price: 52000,
@@ -178,7 +241,9 @@ const productsData = [
   {
     title: "Winter Scarf",
     description: "Wool winter scarf.\nWarm and cozy.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "200cm length",
     price: 19000,
@@ -187,7 +252,9 @@ const productsData = [
   {
     title: "Desk Organizer",
     description: "Bamboo desk organizer.\nMultiple compartments.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "30cm x 20cm",
     price: 24000,
@@ -196,8 +263,10 @@ const productsData = [
   {
     title: "USB-C Cable",
     description: "High quality USB-C cable.\nDurable and fast.",
-    state: "delivered",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "2 meters",
     price: 8000,
     images: "/images/cable.jpg"
@@ -205,7 +274,9 @@ const productsData = [
   {
     title: "Sunglasses",
     description: "UV protection sunglasses.\nStyleish frame.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "Standard",
     price: 45000,
@@ -214,7 +285,9 @@ const productsData = [
   {
     title: "Decorative Plant Pot",
     description: "Ceramic plant pot.\nPerfect for decoration.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "20cm diameter",
     price: 15000,
@@ -223,7 +296,9 @@ const productsData = [
   {
     title: "Water Bottle",
     description: "Insulated water bottle.\nKeeps drinks cold.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Very good",
     measurements: "750ml",
     price: 28000,
@@ -232,8 +307,10 @@ const productsData = [
   {
     title: "Notebook Set",
     description: "Set of quality notebooks.\nBlank pages.",
-    state: "sold",
-    condition: "Like new",
+    estado: "agotado",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "A5 size",
     price: 18000,
     images: "/images/notebook.jpg"
@@ -241,7 +318,9 @@ const productsData = [
   {
     title: "Desk Fan",
     description: "Quiet desk fan.\nAdjustable speed.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "20cm",
     price: 32000,
@@ -250,7 +329,9 @@ const productsData = [
   {
     title: "Bluetooth Speaker",
     description: "Compact bluetooth speaker.\nGreat bass.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Very good",
     measurements: "10cm x 10cm",
     price: 35000,
@@ -259,8 +340,10 @@ const productsData = [
   {
     title: "Phone Case",
     description: "Protective phone case.\nReinforced corners.",
-    state: "paid",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "15cm x 8cm",
     price: 12000,
     images: "/images/case.jpg"
@@ -268,7 +351,9 @@ const productsData = [
   {
     title: "Key Organizer",
     description: "Smart key organizer.\nTrackable.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "5cm x 3cm",
     price: 22000,
@@ -277,7 +362,9 @@ const productsData = [
   {
     title: "Desk Chair Cushion",
     description: "Ergonomic chair cushion.\nMemory foam.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "40cm x 40cm",
     price: 38000,
@@ -286,7 +373,9 @@ const productsData = [
   {
     title: "Workout Gloves",
     description: "Padded workout gloves.\nComfortable fit.",
-    state: "reserved",
+    estado: "pendiente",
+    entregado: false,
+    pagado: false,
     condition: "Very good",
     measurements: "Size M",
     price: 19000,
@@ -295,8 +384,10 @@ const productsData = [
   {
     title: "Screen Protector",
     description: "Tempered glass screen protector.\nEasy install.",
-    state: "available",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
+    condition: "Excellent",
     measurements: "6.5 inch",
     price: 10000,
     images: "/images/protector.jpg"
@@ -304,8 +395,10 @@ const productsData = [
   {
     title: "Desk Lamp Bulb",
     description: "LED bulb replacement.\nEnergy efficient.",
-    state: "available",
-    condition: "New",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "E27",
     price: 6000,
     images: "/images/bulb.jpg"
@@ -313,8 +406,10 @@ const productsData = [
   {
     title: "Cable Organizer",
     description: "Silicone cable organizer clips.\nPack of 5.",
-    state: "delivered",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
+    condition: "Excellent",
     measurements: "5cm diameter",
     price: 7000,
     images: "/images/cableorg.jpg"
@@ -322,7 +417,9 @@ const productsData = [
   {
     title: "Phone Charger",
     description: "Fast charging phone charger.\nQC 3.0.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "Standard",
     price: 22000,
@@ -331,7 +428,9 @@ const productsData = [
   {
     title: "Laptop Stand",
     description: "Adjustable laptop stand.\nAluminum.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Very good",
     measurements: "30cm width",
     price: 45000,
@@ -340,7 +439,9 @@ const productsData = [
   {
     title: "Mouse Pad",
     description: "Extended mouse pad.\nSmooth surface.",
-    state: "sold",
+    estado: "agotado",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "80cm x 30cm",
     price: 16000,
@@ -349,7 +450,9 @@ const productsData = [
   {
     title: "USB Hub",
     description: "4-port USB hub.\nCompact design.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "10cm width",
     price: 18000,
@@ -358,7 +461,9 @@ const productsData = [
   {
     title: "Wireless Mouse",
     description: "Ergonomic wireless mouse.\nQuiet clicks.",
-    state: "paid",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Very good",
     measurements: "6cm x 7cm",
     price: 25000,
@@ -367,7 +472,9 @@ const productsData = [
   {
     title: "Desk Tidy",
     description: "Wooden desk tidy organizer.\nMultiple slots.",
-    state: "available",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "25cm x 12cm",
     price: 21000,
@@ -376,7 +483,9 @@ const productsData = [
   {
     title: "Reading Light",
     description: "Clip-on reading light.\nAdjustable angle.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "20cm",
     price: 26000,
@@ -385,8 +494,10 @@ const productsData = [
   {
     title: "Document Holder",
     description: "Acrylic document holder.\nStandard size.",
-    state: "available",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
+    condition: "Excellent",
     measurements: "25cm x 15cm",
     price: 14000,
     images: "/images/dochold.jpg"
@@ -394,7 +505,9 @@ const productsData = [
   {
     title: "Power Bank",
     description: "20000mAh power bank.\nFast charging.",
-    state: "delivered",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Very good",
     measurements: "12cm x 7cm",
     price: 42000,
@@ -403,8 +516,10 @@ const productsData = [
   {
     title: "HDMI Cable",
     description: "High speed HDMI cable.\n4K compatible.",
-    state: "available",
-    condition: "Like new",
+    estado: "disponible",
+    entregado: false,
+    pagado: false,
+    condition: "Excellent",
     measurements: "2 meters",
     price: 11000,
     images: "/images/hdmi.jpg"
@@ -412,7 +527,9 @@ const productsData = [
   {
     title: "Monitor Stand",
     description: "Adjustable monitor stand.\nRiser.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "40cm width",
     price: 35000,
@@ -421,7 +538,9 @@ const productsData = [
   {
     title: "Keyboard Wrist Rest",
     description: "Gel keyboard wrist rest.\nComfortable.",
-    state: "reserved",
+    estado: "pendiente",
+    entregado: false,
+    pagado: false,
     condition: "Excellent",
     measurements: "50cm x 8cm",
     price: 18000,
@@ -430,29 +549,56 @@ const productsData = [
   {
     title: "Desk Pad",
     description: "Large desk pad.\nLeather surface.",
-    state: "available",
+    estado: "disponible",
+    entregado: true,
+    pagado: true,
     condition: "Excellent",
     measurements: "100cm x 50cm",
     price: 48000,
     images: "/images/deskpad.jpg"
-  },
-];
+  }
+];*/
+
+// Removed products data - they are created from admin interface
 
 async function main() {
   console.log("🌱 Comenzando a sembrear la base de datos...");
   
-  // Limpiar productos existentes
+  // Seed admin user
+  await seedAdmin();
+
+  // Seed product statuses
+  const statuses = [
+    { name: "pendiente", displayName: "Pendiente", color: "#FFA500", displayOrder: 1, isDefault: true },
+    { name: "disponible", displayName: "Disponible", color: "#10B981", displayOrder: 2 },
+    { name: "vendido", displayName: "Vendido", color: "#EF4444", displayOrder: 3 },
+  ];
+
+  for (const status of statuses) {
+    await prisma.productStatus.upsert({
+      where: { name: status.name },
+      update: {},
+      create: status,
+    });
+  }
+  console.log("✓ Product statuses created/verified");
+  
+  // Get default status for products
+  const defaultStatus = await prisma.productStatus.findUnique({
+    where: { name: "disponible" },
+  });
+
+  if (!defaultStatus) {
+    console.error("❌ Default status not found");
+    process.exit(1);
+  }
+  
+  // Limpiar productos existentes (esto también eliminará las imágenes por cascada)
   await prisma.product.deleteMany();
   console.log("🗑️ Productos anteriores eliminados");
   
-  // Insertar nuevos productos
-  for (const product of productsData) {
-    await prisma.product.create({
-      data: product,
-    });
-  }
-  
-  console.log("✅ 50 productos insertados exitosamente");
+  // Insertar nuevos productos - simplificado sin imágenes en seed
+  console.log("✅ Base de datos lista para usar");
 }
 
 main()

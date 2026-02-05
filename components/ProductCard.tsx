@@ -2,21 +2,74 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { formatPriceCLP } from "@/lib/product-ui";
 import StateBadge from "@/components/StateBadge";
+import ImageSkeleton from "@/components/ImageSkeleton";
+import { imageExists } from "@/lib/image-utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
 
 type Product = {
   id: string;
   title: string;
   description: string;
-  state: string;
+  status: {
+    id: string;
+    name: string;
+    displayName: string;
+    color: string;
+    displayOrder: number;
+    isActive: boolean;
+    isDefault: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  entregado: boolean;
+  pagado: boolean;
   condition: string;
   measurements: string;
   price: number;
-  images: string[];
+  images: Array<{
+    id: string;
+    imageUrl: string;
+    isMain: boolean;
+    displayOrder: number;
+  }>;
 };
 
-export default function ProductCard({ product }: { product: Product }) {
+type ProductCardProps = {
+  product: Product;
+  isAdmin?: boolean;
+  onEdit?: (productId: string) => void;
+};
+
+export default function ProductCard({ product, isAdmin = false, onEdit }: ProductCardProps) {
+  const placeholderSrc = "/images/placeholder.svg";
+  const [imageSrc, setImageSrc] = useState<string>(placeholderSrc);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
+  useEffect(() => {
+    const validateAndSetImage = async () => {
+      if (product.images && product.images.length > 0) {
+        const firstImage = product.images[0].imageUrl;
+        // Verificar si la imagen existe
+        const exists = await imageExists(firstImage);
+        if (exists) {
+          setImageSrc(firstImage);
+        } else {
+          setImageSrc(placeholderSrc);
+          setIsImageLoading(false); // No mostrar skeleton para placeholder
+        }
+      } else {
+        setImageSrc(placeholderSrc);
+        setIsImageLoading(false); // No mostrar skeleton para placeholder
+      }
+    };
+
+    validateAndSetImage();
+  }, [product.images, placeholderSrc]);
+
   return (
     // Link a la página de detalle del producto
     // href: construye la URL dinámicamente con el ID del producto
@@ -43,27 +96,56 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* left-3: 0.75rem desde la izquierda */}
         {/* z-10: aparece encima de otros elementos */}
         <div className="absolute top-3 left-3 z-10">
-          <StateBadge state={product.state} />
+          <StateBadge status={product.status} />
         </div>
+
+        {/* Botón de edición - solo visible para admins */}
+        {isAdmin && onEdit && (
+          <button
+            onClick={(e) => {
+              e.preventDefault(); // Evita que el Link se active
+              e.stopPropagation();
+              onEdit(product.id);
+            }}
+            className="absolute top-3 right-3 z-10 bg-blue-600 hover:bg-blue-700 !text-white p-2 rounded-lg shadow-md transition-colors"
+            title="Editar producto"
+          >
+            <FontAwesomeIcon icon={faPencil} size="sm" />
+          </button>
+        )}
 
         {/* Contenedor de la imagen */}
         {/* relative: para que funcione el "fill" de Next/Image */}
         {/* w-full: ancho 100% */}
         {/* h-40: altura 160px */}
         {/* mb-3: margen inferior 0.75rem */}
-        <div className="relative w-full h-40 mb-3">
+        <div className="relative w-full h-40 mb-3 overflow-hidden rounded-lg">
+          {/* Skeleton loader mientras la imagen se carga */}
+          {isImageLoading && imageSrc && imageSrc !== placeholderSrc && (
+            <div className="absolute inset-0 z-10">
+              <ImageSkeleton />
+            </div>
+          )}
+
           {/* Imagen del producto */}
           {/* fill: la imagen llena todo el contenedor padre */}
           {/* sizes: indica qué tamaño de imagen usar según el viewport */}
           {/* object-cover: la imagen cubre todo el espacio sin distorsionarse */}
           {/* rounded-lg: bordes redondeados */}
-          <Image
-            src={product.images[0]}
-            alt={product.title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover rounded-lg"
-          />
+          {imageSrc && (
+            <Image
+              src={imageSrc}
+              alt={product.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover rounded-lg"
+              onLoadingComplete={() => setIsImageLoading(false)}
+              onError={() => {
+                setImageSrc(placeholderSrc);
+                setIsImageLoading(false);
+              }}
+            />
+          )}
         </div>
 
         {/* Título del producto */}

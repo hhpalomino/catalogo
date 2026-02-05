@@ -1,0 +1,13 @@
+{
+    "consoleninja.disable": true,
+    "consoleninja.enabled": false,
+    "[javascript]": {
+        "editor.defaultFormatter": null
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": null
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": null
+    }
+}

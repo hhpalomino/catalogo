@@ -1,21 +1,33 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function DeleteProductPage({ params }: { params: { id: string } }) {
+export default function DeleteProductPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [paramsData, setParamsData] = useState<{ id: string } | null>(null);
+
+  // Unwrap params promise on mount
+  useEffect(() => {
+    (async () => {
+      const resolved = await params;
+      setParamsData(resolved);
+    })();
+  }, [params]);
 
   const handleDelete = async () => {
+    if (!paramsData) return;
     if (!confirm("¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.")) {
       return;
     }
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/products/${params.id}`, {
+      const response = await fetch(`/api/products/${paramsData.id}`, {
         method: "DELETE",
       });
 
@@ -26,6 +38,7 @@ export default function DeleteProductPage({ params }: { params: { id: string } }
       router.push("/admin");
       router.refresh();
     } catch (error) {
+      console.error("Error al eliminar:", error);
       alert("Error al eliminar el producto");
       setLoading(false);
     }
@@ -36,9 +49,10 @@ export default function DeleteProductPage({ params }: { params: { id: string } }
       <div className="mb-8">
         <Link
           href="/admin"
-          className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium mb-4 inline-flex items-center gap-1"
+          className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium mb-4 inline-flex items-center gap-1"
         >
-          ← Volver al Admin
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Volver al Admin
         </Link>
         <h1 className="text-4xl font-bold text-red-600 dark:text-red-400">
           Eliminar Producto
@@ -59,8 +73,9 @@ export default function DeleteProductPage({ params }: { params: { id: string } }
           <button
             onClick={handleDelete}
             disabled={loading}
-            className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-slate-400 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
+            className="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-slate-400 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors inline-flex items-center justify-center gap-2"
           >
+            <FontAwesomeIcon icon={faTrash} />
             {loading ? "Eliminando..." : "Confirmar Eliminación"}
           </button>
           <button

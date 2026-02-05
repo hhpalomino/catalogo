@@ -1,5 +1,7 @@
 import AdminProductForm from "@/components/admin/AdminProductForm";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function CreateProductPage() {
   return (
@@ -7,9 +9,10 @@ export default function CreateProductPage() {
       <div className="mb-8">
         <Link
           href="/admin"
-          className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium mb-4 inline-flex items-center gap-1"
+          className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium mb-4 inline-flex items-center gap-1"
         >
-          ← Volver al Admin
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Volver al Admin
         </Link>
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
           Crear Producto

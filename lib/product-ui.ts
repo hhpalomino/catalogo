@@ -1,5 +1,8 @@
 export function formatPriceCLP(price: number) {
-  return price.toLocaleString("es-CL");
+  // Formateo manual para evitar problemas de hidratación entre servidor y cliente
+  const parts = Math.abs(price).toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return (price < 0 ? '-' : '') + parts.join(',');
 }
 
 export function getStateBadge(state: string) {
@@ -9,6 +12,12 @@ export function getStateBadge(state: string) {
     string,
     { label: string; bg: string; color: string; border?: string }
   > = {
+    // Nuevos estados
+    pendiente: { label: "Pendiente", bg: "#FFF6E5", color: "#8A5A00", border: "#FFE3B3" },
+    disponible: { label: "Disponible", bg: "#E8F7EE", color: "#16794C", border: "#BFE8D1" },
+    agotado: { label: "Agotado", bg: "#FFECEC", color: "#A32020", border: "#FFC7C7" },
+    
+    // Estados antiguos (compatibilidad hacia atrás)
     available: { label: "Disponible", bg: "#E8F7EE", color: "#16794C", border: "#BFE8D1" },
     reserved: { label: "Reservado", bg: "#FFF6E5", color: "#8A5A00", border: "#FFE3B3" },
     paid: { label: "Pagado", bg: "#EAF2FF", color: "#1E4DB7", border: "#C9DCFF" },

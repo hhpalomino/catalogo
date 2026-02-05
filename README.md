@@ -1,6 +1,6 @@
-# 🛍️ Catálogo de Productos
+# 🛍️ GarageMarket
 
-Aplicación web de catálogo público de productos construida con Next.js 15 (App Router). Permite a los usuarios navegar productos sin autenticación, visualizar detalles completos y explorar galerías de imágenes interactivas.
+Plataforma de ventas de garage. Permite a los usuarios navegar productos sin autenticación, visualizar detalles completos y explorar galerías de imágenes interactivas. Panel administrativo para gestionar inventario y ventas.
 
 ## ✨ Características
 

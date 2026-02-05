@@ -64,3 +64,15 @@ svg {
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
+
+/* Cursor pointer para elementos interactivos */
+button,
+a,
+[role="button"],
+[onclick],
+input[type="submit"],
+input[type="button"],
+label[for],
+select {
+  cursor: pointer;
+}

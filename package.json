@@ -1,5 +1,5 @@
 {
-  "name": "catalogo",
+  "name": "garagemarket",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,16 @@
     "lint": "eslint",
     "seed": "node prisma/seed.js"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@prisma/client": "^5.22.0",
+    "@supabase/supabase-js": "^2.94.1",
+    "bcryptjs": "^3.0.3",
     "next": "16.1.6",
     "prisma": "^5.22.0",
     "react": "19.2.3",

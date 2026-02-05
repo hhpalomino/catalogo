@@ -1,18 +1,26 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
-import products from "@/data/products";
+import { prisma } from "@/lib/prisma";
 import ProductGallery from "@/components/ProductGallery";
 import StateBadge from "@/components/StateBadge";
 import { formatPriceCLP } from "@/lib/product-ui";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ id: String(p.id) }));
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    select: { id: true },
+  });
+  return products.map((p) => ({ id: p.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const product = products.find((p) => p.id === Number(id));
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: {
+      status: true,
+    },
+  });
 
   if (!product) {
     return {
@@ -28,11 +36,23 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = products.find((p) => p.id === Number(id));
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: {
+      status: true,
+      images: {
+        orderBy: {
+          displayOrder: "asc",
+        },
+      },
+    },
+  });
 
   if (!product) {
     notFound();
   }
+
+  // Usar directamente product.images sin transformar
 
   return (
     // Contenedor principal de la página
@@ -73,7 +93,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           {/* Badge de estado del producto */}
           {/* mb-4: margen inferior 1rem */}
           <div className="mb-4">
-            <StateBadge state={product.state} size="md" />
+            <StateBadge status={product.status} size="md" />
           </div>
 
           {/* Título del producto */}

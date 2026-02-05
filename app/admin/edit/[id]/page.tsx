@@ -2,10 +2,21 @@ import { prisma } from "@/lib/prisma";
 import AdminProductForm from "@/components/admin/AdminProductForm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
-  const product = await prisma.product.findUnique({
-    where: { id: params.id },
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const product = await (prisma.product.findUnique as any)({
+    where: { id },
+    include: {
+      status: true,
+      images: {
+        orderBy: {
+          displayOrder: "asc",
+        },
+      },
+    },
   });
 
   if (!product) {
@@ -17,9 +28,10 @@ export default async function EditProductPage({ params }: { params: { id: string
       <div className="mb-8">
         <Link
           href="/admin"
-          className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium mb-4 inline-flex items-center gap-1"
+          className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium mb-4 inline-flex items-center gap-1"
         >
-          ← Volver al Admin
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Volver al Admin
         </Link>
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
           Editar Producto
@@ -33,12 +45,20 @@ export default async function EditProductPage({ params }: { params: { id: string
             id: product.id,
             title: product.title,
             description: product.description,
-            state: product.state,
+            statusId: product.statusId,
+            entregado: product.entregado,
+            pagado: product.pagado,
             condition: product.condition,
             measurements: product.measurements,
             price: product.price,
-            images: product.images,
+            images: product.images.map((img: any) => img.imageUrl).join(","),
           }}
+          initialImages={product.images.map((img: any, index: number) => ({
+            id: img.id,
+            url: img.imageUrl,
+            isMain: img.isMain,
+            displayOrder: img.displayOrder,
+          }))}
         />
       </div>
     </main>

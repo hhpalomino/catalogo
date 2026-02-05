@@ -6,19 +6,60 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+model ProductStatus {
+  id           String    @id @default(cuid())
+  name         String    @unique // "pendiente", "disponible", "vendido"
+  displayName  String    // "Pendiente", "Disponible", "Vendido"
+  color        String    // Color hex: "#FFA500", "#10B981", "#EF4444"
+  displayOrder Int       // Orden de aparición en UI
+  isActive     Boolean   @default(true)
+  isDefault    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  products     Product[]
+}
+
 model Product {
+  id             String         @id @default(cuid())
+  title          String
+  description    String
+  condition      String         // "Excellent", "Very good", "Good", "Regular"
+  statusId       String         // Relación con ProductStatus
+  status         ProductStatus  @relation(fields: [statusId], references: [id])
+  entregado      Boolean        @default(false)
+  pagado         Boolean        @default(false)
+  price          Int            // en pesos
+  measurements   String
+  images         ProductImage[] // Relación con ProductImage
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ProductImage {
   id          String   @id @default(cuid())
-  title       String
-  description String
-  condition   String   // "excelente", "muy bueno", "bueno", "regular"
-  state       String   // "available", "reserved", "paid", "delivered", "sold"
-  price       Int      // en pesos
-  measurements String
-  images      String   // URLs separadas por coma
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  imageUrl    String   // Ruta/URL de la imagen
+  isMain      Boolean  @default(false) // Si es la imagen principal
+  displayOrder Int     @default(0) // Orden de visualización
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model User {
+  id            String   @id @default(cuid())
+  username      String   @unique
+  email         String   @unique
+  passwordHash  String
+  role          String   @default("user") // "admin", "user"
+  isActive      Boolean  @default(true)
+  lastLogin     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

@@ -1,172 +1,178 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStepBackward, faChevronLeft, faChevronRight, faStepForward } from "@fortawesome/free-solid-svg-icons";
 import ProductCard from "@/components/ProductCard";
+import IntroductionBanner from "@/components/IntroductionBanner";
+import EditProductModal from "@/components/admin/EditProductModal";
+import AuthButton from "@/components/AuthButton";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: string;
   title: string;
   description: string;
-  state: string;
+  status: {
+    id: string;
+    name: string;
+    displayName: string;
+    color: string;
+    displayOrder: number;
+    isActive: boolean;
+    isDefault: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  entregado: boolean;
+  pagado: boolean;
   condition: string;
   measurements: string;
   price: number;
-  images: string[];
+  images: Array<{
+    id: string;
+    imageUrl: string;
+    isMain: boolean;
+    displayOrder: number;
+  }>;
 };
 
-export default function ProductsClient({ initialProducts }: { initialProducts: Product[] }) {
-  // Estado para el filtro seleccionado (todos, disponible, reservado, etc)
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+const ITEMS_PER_PAGE = 12;
+
+export default function ProductsClient({ initialProducts, isAdmin = false }: { initialProducts: Product[], isAdmin?: boolean }) {
+  const router = useRouter();
+  // Estado para el filtro seleccionado (todos, disponible, pendiente, agotado)
+  // Si no es admin, siempre mostrar solo disponibles
+  const [selectedFilter, setSelectedFilter] = useState<string>(isAdmin ? "all" : "disponible");
+  const [entregadoFilter, setEntregadoFilter] = useState<string>("all");
+  const [pagadoFilter, setPagadoFilter] = useState<string>("all");
   // Estado para la búsqueda de productos
   const [searchQuery, setSearchQuery] = useState("");
+  // Estado para la página actual
+  const [currentPage, setCurrentPage] = useState(1);
+  // Estado para el modal de edición
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
 
-  // Define el orden en que se muestran los estados
-  // Los números definen la prioridad (1 = primero, 5 = último)
-  const stateOrder: Record<string, number> = {
-    available: 1,
-    reserved: 2,
-    paid: 3,
-    delivered: 4,
-    sold: 5,
+  const handleEdit = (productId: string) => {
+    setEditingProductId(productId);
+    setEditModalOpen(true);
   };
 
-  // Filtrar productos según estado y búsqueda
-  const filteredProducts = initialProducts
-    .filter((product) => {
-      // Si el filtro es "all", mostrar todo. Si no, comparar con el estado seleccionado
-      if (selectedFilter !== "all" && product.state !== selectedFilter) {
-        return false;
-      }
-      // Si hay texto de búsqueda, filtrar por título, descripción o condición
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        return (
-          product.title.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          product.condition.toLowerCase().includes(query)
-        );
-      }
-      return true;
-    })
-    // Ordenar productos por su estado (disponibles primero)
-    .sort((a, b) => {
-      const orderA = stateOrder[a.state] || 999;
-      const orderB = stateOrder[b.state] || 999;
-      return orderA - orderB;
-    });
-
-  // Contar cuántos productos hay en cada categoría
-  const counts = {
-    all: initialProducts.length,
-    available: initialProducts.filter((p) => p.state === "available").length,
-    reserved: initialProducts.filter((p) => p.state === "reserved").length,
-    paid: initialProducts.filter((p) => p.state === "paid").length,
-    delivered: initialProducts.filter((p) => p.state === "delivered").length,
-    sold: initialProducts.filter((p) => p.state === "sold").length,
+  const handleEditSuccess = () => {
+    router.refresh(); // Refresca los datos del servidor
   };
+
+  // Memoizar filtrado y conteo para evitar recálculos innecesarios
+  const { filteredProducts, counts } = useMemo(() => {
+    // Define el orden en que se muestran los estados
+    const stateOrder: Record<string, number> = {
+      disponible: 1,
+      pendiente: 2,
+      vendido: 3,
+    };
+
+    // Filtrar productos según estado y búsqueda
+    const filtered = initialProducts
+      .filter((product) => {
+        // Si no es admin, solo mostrar disponibles
+        if (!isAdmin && product.status.name !== "disponible") {
+          return false;
+        }
+        // Si el filtro es "all", mostrar todo. Si no, comparar con el estado seleccionado
+        if (selectedFilter !== "all" && product.status.name !== selectedFilter) {
+          return false;
+        }
+        // Filtro por entregado
+        if (entregadoFilter !== "all") {
+          if (entregadoFilter === "si" && !product.entregado) return false;
+          if (entregadoFilter === "no" && product.entregado) return false;
+        }
+        // Filtro por pagado
+        if (pagadoFilter !== "all") {
+          if (pagadoFilter === "si" && !product.pagado) return false;
+          if (pagadoFilter === "no" && product.pagado) return false;
+        }
+        // Si hay texto de búsqueda, filtrar por título, descripción o condición
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          return (
+            product.title.toLowerCase().includes(query) ||
+            product.description.toLowerCase().includes(query) ||
+            product.condition.toLowerCase().includes(query)
+          );
+        }
+        return true;
+      })
+      // Ordenar productos por su estado (disponibles primero)
+      .sort((a, b) => {
+        const orderA = stateOrder[a.status.name] || 999;
+        const orderB = stateOrder[b.status.name] || 999;
+        return orderA - orderB;
+      });
+
+    // Contar cuántos productos hay en cada categoría
+    const productCounts = {
+      all: initialProducts.length,
+      disponible: initialProducts.filter((p) => p.status.name === "disponible").length,
+      pendiente: initialProducts.filter((p) => p.status.name === "pendiente").length,
+      vendido: initialProducts.filter((p) => p.status.name === "vendido").length,
+    };
+
+    return { filteredProducts: filtered, counts: productCounts };
+  }, [initialProducts, selectedFilter, entregadoFilter, pagadoFilter, searchQuery, isAdmin]);
 
   // Array de filtros para mostrar como botones
-  const filters = [
+  const filters = isAdmin ? [
     { id: "all", label: "Todos", count: counts.all },
-    { id: "available", label: "Disponible", count: counts.available },
-    { id: "reserved", label: "Reservado", count: counts.reserved },
-    { id: "paid", label: "Pagado", count: counts.paid },
-    { id: "delivered", label: "Entregado", count: counts.delivered },
-    { id: "sold", label: "Vendido", count: counts.sold },
+    { id: "disponible", label: "Disponible", count: counts.disponible },
+    { id: "pendiente", label: "Pendiente", count: counts.pendiente },
+    { id: "vendido", label: "Vendido", count: counts.vendido },
+  ] : [
+    { id: "disponible", label: "Disponible", count: counts.disponible },
   ];
 
   return (
-    // Contenedor principal con padding y ancho máximo
-    // px-4: padding horizontal en mobile (1rem)
-    // sm:px-6: aumenta a 1.5rem en tablets
-    // lg:px-8: aumenta a 2rem en desktop
-    // py-8: padding vertical 2rem
-    // md:py-12: aumenta a 3rem en tablets
-    // max-w-7xl: ancho máximo de 80rem (1280px)
-    // mx-auto: centra horizontalmente
-    <main className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header con gradient de fondo - diseño profesional */}
+    <>
+      {/* Contenedor principal con padding y ancho máximo */}
+      {/* px-4: padding horizontal en mobile (1rem) */}
+      {/* sm:px-6: aumenta a 1.5rem en tablets */}
+      {/* lg:px-8: aumenta a 2rem en desktop */}
+      {/* py-8: padding vertical 2rem */}
+      {/* md:py-12: aumenta a 3rem en tablets */}
+      {/* max-w-7xl: ancho máximo de 80rem (1280px) */}
+      {/* mx-auto: centra horizontalmente */}
+      <main className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Header profesional de marketplace */}
       {/* -mx-4: extiende el fondo más allá de los márgenes */}
       {/* px-4 sm:px-6 lg:px-8: padding interno responsive */}
-      {/* py-12: padding vertical 3rem */}
-      {/* bg-gradient-to-r: gradiente de izquierda a derecha */}
-      {/* from-slate-50 to-slate-100: gradiente gris claro a más claro */}
-      {/* dark:from-slate-950 dark:to-slate-900: gradiente oscuro en dark mode */}
-      {/* border-b border-slate-200: borde inferior sutil */}
-      {/* dark:border-slate-800: borde más oscuro en dark */}
-      {/* mb-12: margen inferior 3rem */}
-      <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 border-b border-slate-200 dark:border-slate-800 mb-12">
-        {/* Título principal con gradiente verde sage a naranja */}
-        {/* text-4xl sm:text-5xl lg:text-6xl: tamaños responsive (36px → 60px) */}
-        {/* font-bold: peso 700 */}
-        {/* tracking-tight: reduce espaciado entre letras */}
-        {/* bg-clip-text: permite aplicar gradiente al texto */}
-        {/* bg-gradient-to-r from-emerald-600 to-orange-500: verde sage a naranja */}
-        {/* text-transparent: hace el texto transparente para mostrar el gradiente */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight bg-clip-text bg-gradient-to-r from-emerald-600 to-orange-500 dark:from-emerald-400 dark:to-orange-400 text-transparent">
-          Nati y Tito
-        </h1>
-        {/* Subtítulo mejorado */}
-        {/* text-lg sm:text-xl: tamaño responsive (18px → 20px) */}
-        {/* text-slate-700 dark:text-slate-300: color responsive para dark mode */}
-        {/* font-medium: peso 500 */}
-        <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-300 font-medium">
-          Venden sus cosas
-        </p>
+      {/* py-6: padding vertical compacto */}
+      {/* bg-white dark:bg-slate-900: fondo blanco/oscuro */}
+      {/* border-b: borde inferior */}
+      {/* border-slate-200 dark:border-slate-800: colores del borde */}
+      {/* mb-10: margen inferior */}
+      <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 mb-10">
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          {/* Logo y nombre */}
+          <div className="flex items-center gap-3">
+            {/* Icono de tienda */}
+            <div className="text-3xl">🛍️</div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
+              Mi Tienda
+            </h1>
+          </div>
+
+          {/* Botón de autenticación */}
+          <AuthButton initialIsAdmin={isAdmin} />
+        </div>
       </div>
 
-      {/* Sección de botones de WhatsApp */}
-      {/* flex: utiliza flexbox para layout */}
-      {/* flex-wrap: los botones se envuelven si no caben */}
-      {/* gap-3: espacio entre botones (0.75rem) */}
-      {/* mb-8: margen inferior 2rem */}
-      <div className="mb-8 flex flex-wrap gap-3">
-        {/* Botón de WhatsApp para Tito - verde sage */}
-        {/* inline-flex: flexbox inline para alinear items */}
-        {/* items-center: centra verticalmente los items (el emoji y el texto) */}
-        {/* gap-2: espacio entre icon y texto (0.5rem) */}
-        {/* px-4: padding horizontal 1rem */}
-        {/* py-2: padding vertical 0.5rem */}
-        {/* bg-emerald-600: color verde sage profesional */}
-        {/* hover:bg-emerald-700: verde más oscuro al pasar el mouse */}
-        {/* text-white: texto blanco */}
-        {/* font-semibold: peso 600 */}
-        {/* rounded-lg: bordes redondeados (0.5rem) */}
-        {/* shadow-md: sombra mediana */}
-        {/* hover:shadow-lg: sombra grande al pasar el mouse */}
-        {/* transition-colors: anima cambios de color suavemente */}
-        <a
-          href="https://wa.me/56991594818?text=Hola%20Tito%2C%20te%20escribo%20desde%20tu%20cat%C3%A1logo%20de%20productos"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
-        >
-          💬 WhatsApp Tito
-        </a>
-        {/* Botón de WhatsApp para Nati - mismo color verde sage */}
-        <a
-          href="https://wa.me/56996990301?text=Hola%20Nati%2C%20te%20escribo%20desde%20tu%20cat%C3%A1logo%20de%20productos"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
-        >
-          💬 WhatsApp Nati
-        </a>
-      </div>
-
-      {/* Botón para ir al admin panel */}
-      <div className="mb-8 flex gap-3">
-        <a
-          href="/admin"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
-        >
-          ⚙️ Admin
-        </a>
-      </div>
+      {/* Banner de introducción con descripción y botones WhatsApp */}
+      <IntroductionBanner />
 
       {/* Sección de búsqueda */}
       {/* mb-8: margen inferior 2rem */}
-      <div className="mb-8">
+      <div className="mb-8 mt-8">
         {/* Input de búsqueda */}
         {/* w-full: 100% de ancho */}
         {/* max-w-md: máximo 28rem (448px) */}
@@ -190,67 +196,120 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
           type="text"
           placeholder="🔍 Buscar productos..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full max-w-md px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1); // Reset a página 1 cuando se busca
+          }}
+          className="w-full max-w-md px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
         />
       </div>
 
-      {/* Sección de filtros */}
-      {/* mb-8: margen inferior 2rem */}
-      <div className="mb-8">
-        {/* Etiqueta para los filtros */}
-        {/* text-sm: tamaño pequeño (14px) */}
-        {/* font-medium: peso 500 */}
-        {/* text-slate-700: texto gris oscuro */}
-        {/* dark:text-slate-300: texto gris claro en dark */}
-        {/* mb-3: margen inferior 0.75rem */}
-        <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-          Filtrar por estado:
-        </p>
-        {/* Contenedor con flex para mostrar botones en fila */}
-        {/* flex: utiliza flexbox */}
-        {/* flex-wrap: los botones se envuelven si es necesario */}
-        {/* gap-2: espacio entre botones (0.5rem) */}
-        <div className="flex flex-wrap gap-2">
-          {filters.map((filter) => (
-            // Botón de filtro con estilos dinámicos
-            // px-4: padding horizontal 1rem
-            // py-2: padding vertical 0.5rem
-            // rounded-lg: bordes redondeados
-            // font-medium: peso 500
-            // transition-all: anima todos los cambios suavemente
-            // Nota: Los estilos entre llaves son condicionales:
-            // Si el filtro está activo (selectedFilter === filter.id):
-            //   - bg-emerald-600: fondo verde sage
-            //   - hover:bg-emerald-700: verde más oscuro al pasar mouse
-            //   - text-white: texto blanco
-            //   - shadow-md: sombra mediana
-            // Si NO está activo:
-            //   - bg-slate-200: fondo gris claro
-            //   - dark:bg-slate-700: fondo gris en dark
-            //   - text-slate-900: texto oscuro
-            //   - dark:text-slate-100: texto claro en dark
-            //   - hover:bg-slate-300: gris más oscuro al pasar mouse
-            //   - dark:hover:bg-slate-600: gris más claro en dark al pasar
-            <button
-              key={filter.id}
-              onClick={() => setSelectedFilter(filter.id)}
-              className={`
-                px-4 py-2 rounded-lg font-medium transition-all
-                ${
-                  // Si el filtro está activo, mostrar en verde sage, si no, en gris
-                  selectedFilter === filter.id
-                    ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md"
-                    : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
-                }
-              `}
-            >
-              {/* Mostrar el label y el contador entre paréntesis */}
-              {filter.label} ({filter.count})
-            </button>
-          ))}
+      {/* Sección de filtros - Solo visible para admins */}
+      {isAdmin && (
+        <div className="mb-8 p-4 bg-white dark:bg-slate-800 rounded-lg shadow">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Estado */}
+            <div>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase mb-2">Estado</p>
+              <div className="flex flex-wrap gap-1.5">
+                {filters.map((filter) => (
+                  <button
+                    key={filter.id}
+                    onClick={() => {
+                      setSelectedFilter(filter.id);
+                      setCurrentPage(1);
+                    }}
+                    className={`
+                      px-2.5 py-1 text-xs rounded font-medium transition-all
+                      ${
+                        selectedFilter === filter.id
+                          ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                          : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      }
+                    `}
+                  >
+                    {filter.label} ({filter.count})
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Entregado */}
+            <div>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase mb-2">Entregado</p>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => { setEntregadoFilter("all"); setCurrentPage(1); }}
+                  className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
+                    entregadoFilter === "all"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                  }`}
+                >
+                  Todos ({initialProducts.length})
+                </button>
+                <button
+                  onClick={() => { setEntregadoFilter("si"); setCurrentPage(1); }}
+                  className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
+                    entregadoFilter === "si"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                  }`}
+                >
+                  Sí ({initialProducts.filter(p => p.entregado).length})
+                </button>
+                <button
+                  onClick={() => { setEntregadoFilter("no"); setCurrentPage(1); }}
+                  className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
+                    entregadoFilter === "no"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                  }`}
+                >
+                  No ({initialProducts.filter(p => !p.entregado).length})
+                </button>
+              </div>
+            </div>
+
+            {/* Pagado */}
+            <div>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase mb-2">Pagado</p>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => { setPagadoFilter("all"); setCurrentPage(1); }}
+                  className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
+                    pagadoFilter === "all"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                  }`}
+                >
+                  Todos ({initialProducts.length})
+                </button>
+                <button
+                  onClick={() => { setPagadoFilter("si"); setCurrentPage(1); }}
+                  className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
+                    pagadoFilter === "si"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                  }`}
+                >
+                  Sí ({initialProducts.filter(p => p.pagado).length})
+                </button>
+                <button
+                  onClick={() => { setPagadoFilter("no"); setCurrentPage(1); }}
+                  className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
+                    pagadoFilter === "no"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                  }`}
+                >
+                  No ({initialProducts.filter(p => !p.pagado).length})
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Sección de resultados */}
       {filteredProducts.length === 0 ? (
@@ -266,16 +325,6 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
         </div>
       ) : (
         <>
-          {/* Contador de productos mostrados */}
-          {/* text-sm: tamaño pequeño (14px) */}
-          {/* text-gray-600: texto gris */}
-          {/* dark:text-gray-400: texto gris más claro en dark */}
-          {/* mb-6: margen inferior 1.5rem */}
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-            Mostrando {filteredProducts.length}{" "}
-            {filteredProducts.length === 1 ? "producto" : "productos"}
-          </p>
-
           {/* Grid de productos - se adapta automáticamente en mobile, tablet y desktop */}
           {/* grid: utiliza CSS Grid */}
           {/* grid-cols-1: 1 columna en mobile */}
@@ -284,12 +333,156 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
           {/* xl:grid-cols-4: 4 columnas en desktop (1280px+) */}
           {/* gap-6: espacio entre items (1.5rem) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {filteredProducts
+              .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+              .map((product) => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                isAdmin={isAdmin}
+                onEdit={handleEdit}
+              />
             ))}
           </div>
+
+          {/* Controles de paginación mejorados */}
+          {filteredProducts.length > ITEMS_PER_PAGE && (
+            <div className="mt-12 mb-8">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                {/* Información de paginación */}
+                <div className="text-center sm:text-left">
+                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Página <span className="font-bold text-blue-600 dark:text-blue-400">{currentPage}</span> de{" "}
+                    <span className="font-bold text-blue-600 dark:text-blue-400">
+                      {Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+                    </span>
+                  </p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)} de {filteredProducts.length}{" "}
+                    {filteredProducts.length === 1 ? "producto" : "productos"}
+                  </p>
+                </div>
+
+                {/* Botones de navegación */}
+                <div className="flex items-center gap-2">
+                  {/* Primera */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage(1);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    disabled={currentPage === 1}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
+                    style={{
+                      backgroundColor: currentPage === 1 ? "#e2e8f0" : "#3b82f6",
+                      color: currentPage === 1 ? "#64748b" : "#ffffff",
+                    }}
+                    title="Primera página"
+                  >
+                    <FontAwesomeIcon icon={faStepBackward} size="sm" />
+                  </button>
+
+                  {/* Anterior */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage((prev) => Math.max(prev - 1, 1));
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    disabled={currentPage === 1}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
+                    style={{
+                      backgroundColor: currentPage === 1 ? "#e2e8f0" : "#3b82f6",
+                      color: currentPage === 1 ? "#64748b" : "#ffffff",
+                    }}
+                    title="Página anterior"
+                  >
+                    <FontAwesomeIcon icon={faChevronLeft} size="sm" />
+                  </button>
+
+                  {/* Indicador de página actual */}
+                  <div className="px-4 py-2 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600">
+                    <input
+                      type="number"
+                      min="1"
+                      max={Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+                      value={currentPage}
+                      onChange={(e) => {
+                        const page = Math.max(
+                          1,
+                          Math.min(
+                            parseInt(e.target.value) || 1,
+                            Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+                          )
+                        );
+                        setCurrentPage(page);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="w-12 text-center text-sm font-medium bg-transparent text-slate-900 dark:text-white outline-none"
+                    />
+                  </div>
+
+                  {/* Siguiente */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage((prev) =>
+                        Math.min(prev + 1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE))
+                      );
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    disabled={currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
+                    style={{
+                      backgroundColor:
+                        currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+                          ? "#e2e8f0"
+                          : "#3b82f6",
+                      color:
+                        currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+                          ? "#64748b"
+                          : "#ffffff",
+                    }}
+                    title="Página siguiente"
+                  >
+                    <FontAwesomeIcon icon={faChevronRight} size="sm" />
+                  </button>
+
+                  {/* Última */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage(Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    disabled={currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
+                    style={{
+                      backgroundColor:
+                        currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+                          ? "#e2e8f0"
+                          : "#3b82f6",
+                      color:
+                        currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+                          ? "#64748b"
+                          : "#ffffff",
+                    }}
+                    title="Última página"
+                  >
+                    <FontAwesomeIcon icon={faStepForward} size="sm" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
-    </main>
+      </main>
+
+      {/* Modal de edición */}
+      <EditProductModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        productId={editingProductId}
+        onSuccess={handleEditSuccess}
+      />
+    </>
   );
 }
