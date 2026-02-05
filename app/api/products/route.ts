@@ -152,7 +152,7 @@ export async function GET() {
       },
     });
     return NextResponse.json(products);
-  } catch (error) {
+  } catch {
     // Error silenciado
     return NextResponse.json(
       { error: "Error al obtener los productos" },
