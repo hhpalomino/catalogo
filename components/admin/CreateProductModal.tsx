@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 import ImageUploadInput from "../ImageUploadInput";
 
 interface UploadedImage {
@@ -120,13 +121,16 @@ export default function CreateProductModal({
         throw new Error("Error al crear el producto");
       }
 
+      toast.success(`✅ Producto "${form.title}" creado exitosamente`);
       // Cerrar modal y notificar éxito
       onClose();
       if (onSuccess) {
         onSuccess();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error desconocido");
+      const errorMessage = err instanceof Error ? err.message : "Error desconocido";
+      setError(errorMessage);
+      toast.error(`❌ ${errorMessage}`);
     } finally {
       setLoading(false);
     }

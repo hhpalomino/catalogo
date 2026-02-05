@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faTimes } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 interface ChangePasswordModalProps {
   isOpen: boolean;
@@ -23,12 +24,16 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
     setSuccess(false);
 
     if (newPassword !== confirmPassword) {
-      setError("Las contraseñas no coinciden");
+      const msg = "Las contraseñas no coinciden";
+      setError(msg);
+      toast.error(`❌ ${msg}`);
       return;
     }
 
     if (newPassword.length < 4) {
-      setError("La contraseña debe tener al menos 4 caracteres");
+      const msg = "La contraseña debe tener al menos 4 caracteres";
+      setError(msg);
+      toast.error(`❌ ${msg}`);
       return;
     }
 
@@ -44,11 +49,14 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Error al cambiar contraseña");
+        const errorMsg = data.error || "Error al cambiar contraseña";
+        setError(errorMsg);
+        toast.error(`❌ ${errorMsg}`);
         setLoading(false);
         return;
       }
 
+      toast.success("✅ Contraseña cambiada exitosamente");
       setSuccess(true);
       setCurrentPassword("");
       setNewPassword("");

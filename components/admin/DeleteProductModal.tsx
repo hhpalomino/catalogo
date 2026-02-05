@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 type DeleteProductModalProps = {
   isOpen: boolean;
@@ -37,13 +38,16 @@ export default function DeleteProductModal({
         throw new Error("Error al eliminar el producto");
       }
 
+      toast.success(`✅ Producto "${productTitle}" eliminado exitosamente`);
       // Cerrar modal y notificar éxito
       onClose();
       if (onSuccess) {
         onSuccess();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error desconocido");
+      const errorMessage = err instanceof Error ? err.message : "Error desconocido";
+      setError(errorMessage);
+      toast.error(`❌ ${errorMessage}`);
     } finally {
       setLoading(false);
     }

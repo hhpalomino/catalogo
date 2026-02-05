@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud, faX } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 interface UploadedImage {
   id: string;
@@ -39,16 +40,21 @@ export default function ImageUploadInput({
 
       setError("");
       setUploading(true);
+      let successCount = 0;
 
       try {
         for (const file of Array.from(files)) {
           // Validación en cliente
           if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-            setError("Solo JPG, PNG y WebP permitidos");
+            const msg = "Solo JPG, PNG y WebP permitidos";
+            setError(msg);
+            toast.error(`❌ ${msg}`);
             continue;
           }
           if (file.size > 5 * 1024 * 1024) {
-            setError("Máximo 5MB por imagen");
+            const msg = "Máximo 5MB por imagen";
+            setError(msg);
+            toast.error(`❌ ${msg}`);
             continue;
           }
 
@@ -64,7 +70,9 @@ export default function ImageUploadInput({
 
           if (!response.ok) {
             const data = await response.json();
-            setError(data.error || "Error al subir imagen");
+            const msg = data.error || "Error al subir imagen";
+            setError(msg);
+            toast.error(`❌ ${msg}`);
             continue;
           }
 
@@ -77,9 +85,16 @@ export default function ImageUploadInput({
           };
 
           setImages((prev) => [...prev, newImage]);
+          successCount++;
+        }
+        
+        if (successCount > 0) {
+          toast.success(`✅ ${successCount} imagen(es) subida(s) exitosamente`);
         }
       } catch (err) {
-        setError("Error al subir imagen");
+        const msg = "Error al subir imagen";
+        setError(msg);
+        toast.error(`❌ ${msg}`);
         console.error(err);
       } finally {
         setUploading(false);

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Footer from "@/components/Footer";
 
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
+        <Toaster position="top-right" />
         <div className="flex-1">
           {children}
         </div>

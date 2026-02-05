@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faUserShield, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 interface AuthButtonProps {
   initialIsAdmin: boolean;
@@ -57,6 +58,7 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
       });
 
       if (response.ok) {
+        toast.success(`✅ ¡Bienvenido ${username}!`);
         setLoggedUsername(username);
         setIsAdmin(true);
         setIsOpen(false);
@@ -65,7 +67,9 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
         router.refresh();
       } else {
         const data = await response.json();
-        setError(data.error || "Error al iniciar sesión");
+        const errorMsg = data.error || "Error al iniciar sesión";
+        setError(errorMsg);
+        toast.error(`❌ ${errorMsg}`);
       }
     } finally {
       setLoading(false);
@@ -75,10 +79,12 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
   const handleLogout = async () => {
     try {
       await fetch("/api/admin/logout", { method: "POST" });
+      toast.success("✅ Sesión cerrada");
       setIsAdmin(false);
       router.refresh();
     } catch (err) {
       console.error("Error al cerrar sesión:", err);
+      toast.error("❌ Error al cerrar sesión");
     }
   };
 
