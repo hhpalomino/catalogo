@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBoxOpen, faKey, faBars, faTimes, faChartPie } from "@fortawesome/free-solid-svg-icons";
+import { faBoxOpen, faKey, faChartPie, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 interface AdminSidebarProps {
   currentSection: "resumen" | "productos" | "cambiar-password";
@@ -35,11 +35,11 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
 
   return (
     <>
-      {/* Botón hamburguesa móvil */}
+      {/* Botón móvil flotante */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-20 left-4 z-50 flex items-center justify-center w-12 h-12 bg-[#4F6F52] dark:bg-[#455C47] text-white rounded-lg shadow-lg hover:bg-[#3F5C43] transition-colors"
-        aria-label="Abrir menú"
+        className="lg:hidden fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#4F6F52] dark:bg-[#455C47] text-white rounded-full shadow-xl hover:bg-[#3F5C43] transition-colors"
+        aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
       >
         <FontAwesomeIcon icon={isOpen ? faTimes : faBars} size="lg" />
       </button>
@@ -52,13 +52,11 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar desktop */}
       <aside
         className={`
-          fixed lg:sticky top-0 left-0 h-screen lg:h-auto
+          hidden lg:block sticky top-0 left-0 h-screen
           w-64 bg-white dark:bg-[#2E2E2E] border-r-2 border-[#DADADA] dark:border-[#415543]
-          transform transition-transform duration-300 ease-in-out z-50
-          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
         <div className="p-6">
@@ -109,6 +107,78 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
           </nav>
         </div>
       </aside>
+
+      {/* Panel móvil inferior */}
+      <div
+        className={`
+          lg:hidden fixed left-0 right-0 bottom-0 z-50
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-y-0" : "translate-y-full"}
+        `}
+      >
+        <div className="bg-white dark:bg-[#2E2E2E] rounded-t-3xl border-t border-[#DADADA] dark:border-[#415543] shadow-2xl px-5 pt-4 pb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-base font-bold text-[#2E2E2E] dark:text-white">
+                Menú Admin
+              </h2>
+              <p className="text-xs text-[#6B6B6B] dark:text-[#DADADA]">
+                Gestión del sistema
+              </p>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-[#F5F3EF] dark:bg-[#455C47]"
+              aria-label="Cerrar menú"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  onSectionChange(item.id);
+                  setIsOpen(false);
+                }}
+                className={`
+                  w-full flex items-center gap-3 px-4 py-4 rounded-2xl text-left transition-colors
+                  ${
+                    currentSection === item.id
+                      ? "bg-[#4F6F52] dark:bg-[#455C47] text-white"
+                      : "bg-[#F5F3EF] dark:bg-[#3A4F3B] text-[#2E2E2E] dark:text-white"
+                  }
+                `}
+              >
+                <span
+                  className={`
+                    flex items-center justify-center w-10 h-10 rounded-xl
+                    ${
+                      currentSection === item.id
+                        ? "bg-white/15 text-white"
+                        : "bg-white dark:bg-[#2E2E2E] text-[#4F6F52] dark:text-[#C26D4A]"
+                    }
+                  `}
+                >
+                  <FontAwesomeIcon icon={item.icon} />
+                </span>
+                <div>
+                  <div className="text-sm font-semibold">{item.label}</div>
+                  <div
+                    className={`text-xs mt-0.5 ${
+                      currentSection === item.id ? "text-white/80" : "text-[#6B6B6B] dark:text-[#DADADA]"
+                    }`}
+                  >
+                    {item.description}
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

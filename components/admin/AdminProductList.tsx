@@ -119,6 +119,12 @@ export default function AdminProductList({ products }: { products: Product[] }) 
     });
   }, [products, selectedFilter, entregadoFilter, pagadoFilter, searchQuery]);
 
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
+  const pagedProducts = filteredProducts.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
     <div>
       {/* Search y Nuevo Producto */}
@@ -259,8 +265,91 @@ export default function AdminProductList({ products }: { products: Product[] }) 
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
+      {/* Cards (mobile) */}
+      <div className="lg:hidden p-4 space-y-3">
+        {pagedProducts.length === 0 ? (
+          <div className="px-4 py-8 text-center text-[#6B6B6B] dark:text-[#E2E7E3] bg-[#F5F3EF] dark:bg-[#3A4F3B] rounded-xl">
+            No hay productos que coincidan con tu búsqueda
+          </div>
+        ) : (
+          pagedProducts.map((product) => (
+            <div
+              key={product.id}
+              className="bg-white dark:bg-[#2E2E2E] border border-[#DADADA] dark:border-[#415543] rounded-xl p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-semibold text-[#2E2E2E] dark:text-white truncate">
+                    {product.title}
+                  </p>
+                  <p className="text-xs text-[#6B6B6B] dark:text-[#E2E7E3] break-all">
+                    ID: {product.id}
+                  </p>
+                </div>
+                <span
+                  className="px-2 py-1 rounded text-xs font-medium text-white whitespace-nowrap"
+                  style={{ backgroundColor: product.status.color }}
+                >
+                  {product.status.displayName}
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-base font-semibold text-[#C26D4A]">
+                  ${formatPriceCLP(product.price)}
+                </p>
+                <span className="text-xs text-[#6B6B6B] dark:text-[#E2E7E3]">
+                  {product.condition}
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center gap-2 text-xs">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full font-medium ${
+                  product.entregado
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                    : "bg-[#DADADA] text-[#2E2E2E] dark:bg-[#455C47] dark:text-white"
+                }`}>
+                  Entregado: {product.entregado ? "Sí" : "No"}
+                </span>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full font-medium ${
+                  product.pagado
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                    : "bg-[#DADADA] text-[#2E2E2E] dark:bg-[#455C47] dark:text-white"
+                }`}>
+                  Pagado: {product.pagado ? "Sí" : "No"}
+                </span>
+              </div>
+
+              <div className="mt-4 flex items-center gap-3">
+                <Link
+                  href={`/product/${product.id}`}
+                  className="inline-flex items-center justify-center w-9 h-9 bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] text-[#2E2E2E] dark:text-white rounded-lg transition-colors"
+                  title="Ver producto"
+                >
+                  <FontAwesomeIcon icon={faEye} size="sm" />
+                </Link>
+                <button
+                  onClick={() => handleEdit(product.id)}
+                  className="inline-flex items-center justify-center w-9 h-9 bg-[#4F6F52] hover:bg-[#3F5C43] !text-white rounded-lg transition-colors"
+                  title="Editar producto"
+                >
+                  <FontAwesomeIcon icon={faPencil} size="sm" />
+                </button>
+                <button
+                  onClick={() => handleDelete(product.id, product.title)}
+                  className="inline-flex items-center justify-center w-9 h-9 bg-[#C0392B] hover:bg-[#A0311E] !text-white rounded-lg transition-colors"
+                  title="Eliminar producto"
+                >
+                  <FontAwesomeIcon icon={faTrash} size="sm" />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Table (desktop) */}
+      <div className="hidden lg:block overflow-x-auto">
         <table className="w-full">
           <thead className="bg-[#F0F3F1] dark:bg-[#455C47]">
             <tr>
@@ -295,9 +384,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                 </td>
               </tr>
             ) : (
-              filteredProducts
-                .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-                .map((product) => (
+              pagedProducts.map((product) => (
                 <tr
                   key={product.id}
                   className="hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] transition-colors"
@@ -425,28 +512,28 @@ export default function AdminProductList({ products }: { products: Product[] }) 
             </button>
             
             <span className="px-3 py-1 text-sm font-medium">
-              {currentPage} de {Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+              {currentPage} de {totalPages}
             </span>
             
             <button
-              onClick={() => setCurrentPage((p) => Math.min(Math.ceil(filteredProducts.length / ITEMS_PER_PAGE), p + 1))}
-              disabled={currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
               className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
               style={{
-                backgroundColor: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#E2E7E3" : "#4F6F52",
-                color: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#6B6B6B" : "#ffffff",
+                backgroundColor: currentPage === totalPages ? "#E2E7E3" : "#4F6F52",
+                color: currentPage === totalPages ? "#6B6B6B" : "#ffffff",
               }}
               title="Página siguiente"
             >
               <FontAwesomeIcon icon={faChevronRight} size="sm" />
             </button>
             <button
-              onClick={() => setCurrentPage(Math.ceil(filteredProducts.length / ITEMS_PER_PAGE))}
-              disabled={currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
+              onClick={() => setCurrentPage(totalPages)}
+              disabled={currentPage === totalPages}
               className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
               style={{
-                backgroundColor: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#E2E7E3" : "#4F6F52",
-                color: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#6B6B6B" : "#ffffff",
+                backgroundColor: currentPage === totalPages ? "#E2E7E3" : "#4F6F52",
+                color: currentPage === totalPages ? "#6B6B6B" : "#ffffff",
               }}
               title="Última página"
             >

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 
 interface AuthButtonProps {
@@ -13,6 +13,7 @@ interface AuthButtonProps {
 export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
   const [isAdmin, setIsAdmin] = useState(initialIsAdmin);
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,6 +22,8 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
   
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   // Close popover when clicking outside
@@ -44,6 +47,27 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +117,7 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
   if (isAdmin) {
     return (
       <div className="flex items-center gap-3">
-        {/* Navegación */}
+        {/* Navegación desktop */}
         <nav className="hidden sm:flex items-center gap-2">
           <button
             onClick={() => router.push("/")}
@@ -108,6 +132,47 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
             Administración
           </button>
         </nav>
+
+        {/* Navegación mobile */}
+        <div className="relative sm:hidden">
+          <button
+            ref={menuButtonRef}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] transition-colors"
+            aria-label="Abrir menú"
+            title="Abrir menú"
+          >
+            <FontAwesomeIcon icon={faBars} className="text-[#4F6F52] dark:text-white text-lg" />
+          </button>
+
+          {isMenuOpen && (
+            <div
+              ref={menuRef}
+              className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#2E2E2E] rounded-lg shadow-lg border border-[#DADADA] dark:border-[#415543] z-50"
+            >
+              <div className="p-2">
+                <button
+                  onClick={() => {
+                    router.push("/");
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] rounded-md"
+                >
+                  Catálogo
+                </button>
+                <button
+                  onClick={() => {
+                    router.push("/admin");
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] rounded-md"
+                >
+                  Administración
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Nombre de usuario */}
         <span className="hidden sm:inline-block text-sm font-semibold text-[#2E2E2E] dark:text-white px-3 py-1 bg-[#F5F3EF] dark:bg-[#455C47] rounded-lg">

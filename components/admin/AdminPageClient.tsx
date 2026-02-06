@@ -138,6 +138,32 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
           </div>
         </div>
 
+        {/* Selector de seccion en movil */}
+        <div className="lg:hidden -mt-6 mb-6">
+          <div className="bg-white dark:bg-[#2E2E2E] border border-[#DADADA] dark:border-[#415543] rounded-xl p-2 flex items-center gap-2">
+            {([
+              { id: "resumen", label: "Resumen" },
+              { id: "productos", label: "Productos" },
+              { id: "cambiar-password", label: "Contraseña" },
+            ] as const).map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentSection(item.id)}
+                className={`
+                  flex-1 px-3 py-2 text-xs font-semibold rounded-lg transition-colors
+                  ${
+                    currentSection === item.id
+                      ? "bg-[#4F6F52] dark:bg-[#455C47] text-white"
+                      : "text-[#2E2E2E] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47]"
+                  }
+                `}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Contenido según sección */}
         {currentSection === "resumen" ? (
           <>
