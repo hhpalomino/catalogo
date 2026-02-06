@@ -6,12 +6,7 @@ import ProductGallery from "@/components/ProductGallery";
 import StateBadge from "@/components/StateBadge";
 import { formatPriceCLP } from "@/lib/product-ui";
 
-export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    select: { id: true },
-  });
-  return products.map((p) => ({ id: p.id }));
-}
+
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
