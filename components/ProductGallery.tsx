@@ -81,8 +81,8 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             // h-20: altura 80px (5rem)
             // p-0: sin padding para que la imagen ocupe todo
             // border-2: borde de 2px
-            // border-blue-500: borde azul cuando está seleccionado
-            // dark:border-blue-400: azul más claro en dark
+            // border-[#4F6F52]: borde olive cuando está seleccionado
+            // dark:border-[#C26D4A]: terracotta más claro en dark
             // border-gray-300: borde gris cuando NO está seleccionado
             // dark:border-gray-600: gris en dark
             // rounded-lg: bordes redondeados
@@ -105,8 +105,8 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                 ${
                   // Si es la imagen seleccionada
                   safeSelectedIndex === index
-                    ? "border-2 border-blue-500 dark:border-blue-400 opacity-100"
-                    : "border-2 border-gray-300 dark:border-gray-600 opacity-60 hover:opacity-100"
+                    ? "border-2 border-[#4F6F52] dark:border-[#C26D4A] opacity-100"
+                    : "border-2 border-[#DADADA] dark:border-[#CAD3CB] opacity-60 hover:opacity-100"
                 }
               `}
             >

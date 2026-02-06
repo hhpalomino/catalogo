@@ -75,33 +75,6 @@ export default function CreateProductModal({
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (uploadedImages.length === 0) {
-      toast.error("❌ Debes agregar al menos una imagen");
-      return;
-    }
-
-    await execute(
-      async () => {
-        const submitData: ProductInput = {
-          ...form,
-          images: uploadedImages.map((img) => img.url).join(","),
-        };
-        return await productApi.create(submitData);
-      },
-      () => {
-        toast.success(`✅ Producto "${form.title}" creado exitosamente`);
-        onClose();
-        onSuccess?.();
-      },
-      (err) => {
-        toast.error(`❌ ${err.message}`);
-      }
-    );
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Crear Producto" size="lg">
       <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./globals.css";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+config.autoAddCss = false;
 
 // Fuente Inter - moderna, limpia y versátil
 const inter = Inter({
@@ -11,8 +16,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Nati y Tito venden sus cosas :D",
-  description: "Catálogo de productos de Nati y Tito",
+  title: "Garage Market - Tienda de productos",
+  description: "Catálogo de productos Garage Market - Encuentra artículos de calidad",
 };
 
 export default function RootLayout({
@@ -26,6 +31,7 @@ export default function RootLayout({
         className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
         <Toaster position="top-right" />
+        <Header />
         <div className="flex-1">
           {children}
         </div>

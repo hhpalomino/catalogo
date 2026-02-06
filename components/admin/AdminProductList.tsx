@@ -122,17 +122,17 @@ export default function AdminProductList({ products }: { products: Product[] }) 
   return (
     <div>
       {/* Search y Nuevo Producto */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div className="p-4 border-b border-[#DADADA] dark:border-[#455C47] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <input
           type="text"
           placeholder="🔍 Buscar por título o ID..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full sm:max-w-md px-4 py-2 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500"
+          className="w-full sm:max-w-md px-4 py-2 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white placeholder-[#6B6B6B] dark:placeholder-[#DADADA] focus:outline-none focus:border-[#4F6F52]"
         />
         <button
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-800 dark:bg-blue-600 hover:bg-blue-900 dark:hover:bg-blue-700 !text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors whitespace-nowrap"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#4F6F52] dark:bg-[#4F6F52] hover:bg-[#3F5C43] dark:hover:bg-[#3F5C43] !text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors whitespace-nowrap"
         >
           <FontAwesomeIcon icon={faPlus} size="sm" />
           Nuevo Producto
@@ -140,11 +140,11 @@ export default function AdminProductList({ products }: { products: Product[] }) 
       </div>
 
       {/* Filtros compactos en grid */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+      <div className="p-4 border-b border-[#DADADA] dark:border-[#455C47]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Estado */}
           <div>
-            <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">ESTADO</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] mb-2">ESTADO</p>
             <div className="flex flex-wrap gap-1.5">
               {filters.map((filter) => (
                 <button
@@ -154,8 +154,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                     px-2.5 py-1 rounded text-xs font-medium transition-all
                     ${
                       selectedFilter === filter.id
-                        ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                        : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                        ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                        : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                     }
                   `}
                 >
@@ -167,7 +167,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
 
           {/* Entregado */}
           <div>
-            <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">ENTREGADO</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] mb-2">ENTREGADO</p>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setEntregadoFilter("all")}
@@ -175,8 +175,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     entregadoFilter === "all"
-                      ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }
                 `}
               >
@@ -188,8 +188,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     entregadoFilter === "si"
-                      ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }
                 `}
               >
@@ -201,8 +201,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     entregadoFilter === "no"
-                      ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }
                 `}
               >
@@ -213,7 +213,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
 
           {/* Pagado */}
           <div>
-            <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">PAGADO</p>
+            <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] mb-2">PAGADO</p>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setPagadoFilter("all")}
@@ -221,8 +221,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     pagadoFilter === "all"
-                      ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }
                 `}
               >
@@ -234,8 +234,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     pagadoFilter === "si"
-                      ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }
                 `}
               >
@@ -247,8 +247,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     pagadoFilter === "no"
-                      ? "bg-blue-600 hover:bg-blue-700 !text-white shadow-sm"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }
                 `}
               >
@@ -262,35 +262,35 @@ export default function AdminProductList({ products }: { products: Product[] }) 
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-slate-50 dark:bg-slate-700">
+          <thead className="bg-[#F0F3F1] dark:bg-[#455C47]">
             <tr>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Título
               </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Estado
               </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Entregado
               </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Pagado
               </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Precio
               </th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-left text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Condición
               </th>
-              <th className="px-4 py-3 text-center text-sm font-semibold text-slate-900 dark:text-white">
+              <th className="px-4 py-3 text-center text-sm font-semibold text-[#2E2E2E] dark:text-[#FFFFFF]">
                 Acciones
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+          <tbody className="divide-y divide-[#DADADA] dark:divide-[#455C47]">
             {filteredProducts.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
+                <td colSpan={7} className="px-4 py-8 text-center text-[#6B6B6B] dark:text-[#E2E7E3]">
                   No hay productos que coincidan con tu búsqueda
                 </td>
               </tr>
@@ -300,12 +300,12 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                 .map((product) => (
                 <tr
                   key={product.id}
-                  className="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                  className="hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] transition-colors"
                 >
-                  <td className="px-4 py-3 text-sm text-slate-900 dark:text-white font-medium">
+                  <td className="px-4 py-3 text-sm text-[#2E2E2E] dark:text-[#FFFFFF] font-medium">
                     <div>
                       <p>{product.title}</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">ID: {product.id}</p>
+                      <p className="text-xs text-[#6B6B6B] dark:text-[#E2E7E3]">ID: {product.id}</p>
                     </div>
                   </td>
                   <td className="px-4 py-3 text-sm">
@@ -316,53 +316,53 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                       {product.status.displayName}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-900 dark:text-white">
+                  <td className="px-4 py-3 text-sm text-[#2E2E2E] dark:text-[#FFFFFF]">
                     {product.entregado ? (
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                         Sí
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#DADADA] text-[#2E2E2E] dark:bg-[#455C47] dark:text-[#FFFFFF]">
                         No
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-900 dark:text-white">
+                  <td className="px-4 py-3 text-sm text-[#2E2E2E] dark:text-[#FFFFFF]">
                     {product.pagado ? (
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                         Sí
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#DADADA] text-[#2E2E2E] dark:bg-[#455C47] dark:text-[#FFFFFF]">
                         No
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-900 dark:text-white font-semibold">
+                  <td className="px-4 py-3 text-sm text-[#2E2E2E] dark:text-[#FFFFFF] font-semibold">
                     ${formatPriceCLP(product.price)}
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">
+                  <td className="px-4 py-3 text-sm text-[#6B6B6B] dark:text-[#E2E7E3]">
                     {product.condition}
                   </td>
                   <td className="px-4 py-3 text-sm whitespace-nowrap">
                     <div className="flex justify-center gap-3">
                       <Link
                         href={`/product/${product.id}`}
-                        className="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] text-[#2E2E2E] dark:text-[#FFFFFF] rounded-lg transition-colors"
                         title="Ver producto"
                       >
                         <FontAwesomeIcon icon={faEye} size="sm" />
                       </Link>
                       <button
                         onClick={() => handleEdit(product.id)}
-                        className="inline-flex items-center justify-center w-8 h-8 bg-blue-800 dark:bg-blue-600 hover:bg-blue-900 dark:hover:bg-blue-700 !text-white rounded-lg transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 bg-[#4F6F52] dark:bg-[#4F6F52] hover:bg-[#3F5C43] dark:hover:bg-[#3F5C43] !text-white rounded-lg transition-colors"
                         title="Editar producto"
                       >
                         <FontAwesomeIcon icon={faPencil} size="sm" />
                       </button>
                       <button
                         onClick={() => handleDelete(product.id, product.title)}
-                        className="inline-flex items-center justify-center w-8 h-8 bg-red-800 dark:bg-red-600 hover:bg-red-900 dark:hover:bg-red-700 !text-white rounded-lg transition-colors"
+                        className="inline-flex items-center justify-center w-8 h-8 bg-[#C0392B] dark:bg-[#C0392B] hover:bg-[#A0311E] dark:hover:bg-[#A0311E] !text-white rounded-lg transition-colors"
                         title="Eliminar producto"
                       >
                         <FontAwesomeIcon icon={faTrash} size="sm" />
@@ -373,14 +373,14 @@ export default function AdminProductList({ products }: { products: Product[] }) 
               ))
             )}
           </tbody>
-          <tfoot className="bg-slate-50 dark:bg-slate-800 border-t-2 border-slate-300 dark:border-slate-600">
+          <tfoot className="bg-[#F0F3F1] dark:bg-[#455C47] border-t-2 border-[#DADADA] dark:border-[#334B37]">
             <tr>
               <td colSpan={7} className="px-4 py-4 text-sm">
                 <div className="flex justify-between items-center font-semibold">
-                  <span className="text-slate-700 dark:text-slate-300">
+                  <span className="text-[#6B6B6B] dark:text-[#FFFFFF]">
                     Total de {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}:
                   </span>
-                  <span className="text-lg text-blue-600 dark:text-blue-400">
+                  <span className="text-lg text-[#C26D4A] dark:text-[#E3BDAD]">
                     ${formatPriceCLP(filteredProducts.reduce((sum, p) => sum + p.price, 0))}
                   </span>
                 </div>
@@ -391,7 +391,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
       </div>
 
       {/* Pagination info */}
-      <div className="px-4 py-3 bg-slate-50 dark:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div className="px-4 py-3 bg-[#F0F3F1] dark:bg-[#455C47] text-sm text-[#6B6B6B] dark:text-[#FFFFFF] flex flex-col sm:flex-row justify-between items-center gap-3">
         <div className="text-center sm:text-left">
           Mostrando {filteredProducts.length > 0 ? Math.min((currentPage - 1) * ITEMS_PER_PAGE + 1, filteredProducts.length) : 0}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)} de {filteredProducts.length} productos
         </div>
@@ -404,8 +404,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
               disabled={currentPage === 1}
               className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
               style={{
-                backgroundColor: currentPage === 1 ? "#e2e8f0" : "#3b82f6",
-                color: currentPage === 1 ? "#64748b" : "#ffffff",
+                backgroundColor: currentPage === 1 ? "#E2E7E3" : "#4F6F52",
+                color: currentPage === 1 ? "#6B6B6B" : "#ffffff",
               }}
               title="Primera página"
             >
@@ -416,8 +416,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
               disabled={currentPage === 1}
               className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
               style={{
-                backgroundColor: currentPage === 1 ? "#e2e8f0" : "#3b82f6",
-                color: currentPage === 1 ? "#64748b" : "#ffffff",
+                backgroundColor: currentPage === 1 ? "#E2E7E3" : "#4F6F52",
+                color: currentPage === 1 ? "#6B6B6B" : "#ffffff",
               }}
               title="Página anterior"
             >
@@ -433,8 +433,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
               disabled={currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
               className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
               style={{
-                backgroundColor: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#e2e8f0" : "#3b82f6",
-                color: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#64748b" : "#ffffff",
+                backgroundColor: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#E2E7E3" : "#4F6F52",
+                color: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#6B6B6B" : "#ffffff",
               }}
               title="Página siguiente"
             >
@@ -445,8 +445,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
               disabled={currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
               className="inline-flex items-center justify-center w-8 h-8 rounded-lg font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-md"
               style={{
-                backgroundColor: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#e2e8f0" : "#3b82f6",
-                color: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#64748b" : "#ffffff",
+                backgroundColor: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#E2E7E3" : "#4F6F52",
+                color: currentPage === Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) ? "#6B6B6B" : "#ffffff",
               }}
               title="Última página"
             >

@@ -6,7 +6,6 @@ import { faStepBackward, faChevronLeft, faChevronRight, faStepForward } from "@f
 import ProductCard from "@/components/ProductCard";
 import IntroductionBanner from "@/components/IntroductionBanner";
 import EditProductModal from "@/components/admin/EditProductModal";
-import AuthButton from "@/components/AuthButton";
 import { useRouter } from "next/navigation";
 
 type Product = {
@@ -147,26 +146,6 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
       {/* -mx-4: extiende el fondo más allá de los márgenes */}
       {/* px-4 sm:px-6 lg:px-8: padding interno responsive */}
       {/* py-6: padding vertical compacto */}
-      {/* bg-white dark:bg-slate-900: fondo blanco/oscuro */}
-      {/* border-b: borde inferior */}
-      {/* border-slate-200 dark:border-slate-800: colores del borde */}
-      {/* mb-10: margen inferior */}
-      <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 mb-10">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          {/* Logo y nombre */}
-          <div className="flex items-center gap-3">
-            {/* Icono de tienda */}
-            <div className="text-3xl">🛍️</div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-              Mi Tienda
-            </h1>
-          </div>
-
-          {/* Botón de autenticación */}
-          <AuthButton initialIsAdmin={isAdmin} />
-        </div>
-      </div>
-
       {/* Banner de introducción con descripción y botones WhatsApp */}
       <IntroductionBanner />
 
@@ -200,7 +179,7 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
             setSearchQuery(e.target.value);
             setCurrentPage(1); // Reset a página 1 cuando se busca
           }}
-          className="w-full max-w-md px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors"
+          className="w-full max-w-md px-4 py-3 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white placeholder-[#6B6B6B] dark:placeholder-[#DADADA] focus:outline-none focus:border-[#4F6F52] dark:focus:border-[#4F6F52] transition-colors"
         />
       </div>
 
@@ -223,8 +202,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                       px-2.5 py-1 text-xs rounded font-medium transition-all
                       ${
                         selectedFilter === filter.id
-                          ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                          : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                          ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                          : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                       }
                     `}
                   >
@@ -236,14 +215,14 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
 
             {/* Entregado */}
             <div>
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase mb-2">Entregado</p>
+              <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] uppercase mb-2">Entregado</p>
               <div className="flex flex-wrap gap-1.5">
                 <button
                   onClick={() => { setEntregadoFilter("all"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     entregadoFilter === "all"
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }`}
                 >
                   Todos ({initialProducts.length})
@@ -252,8 +231,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setEntregadoFilter("si"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     entregadoFilter === "si"
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }`}
                 >
                   Sí ({initialProducts.filter(p => p.entregado).length})
@@ -262,8 +241,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setEntregadoFilter("no"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     entregadoFilter === "no"
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }`}
                 >
                   No ({initialProducts.filter(p => !p.entregado).length})
@@ -273,14 +252,14 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
 
             {/* Pagado */}
             <div>
-              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase mb-2">Pagado</p>
+              <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] uppercase mb-2">Pagado</p>
               <div className="flex flex-wrap gap-1.5">
                 <button
                   onClick={() => { setPagadoFilter("all"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     pagadoFilter === "all"
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }`}
                 >
                   Todos ({initialProducts.length})
@@ -289,8 +268,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setPagadoFilter("si"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     pagadoFilter === "si"
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }`}
                 >
                   Sí ({initialProducts.filter(p => p.pagado).length})
@@ -299,8 +278,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setPagadoFilter("no"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     pagadoFilter === "no"
-                      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      : "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600"
+                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
                   }`}
                 >
                   No ({initialProducts.filter(p => !p.pagado).length})
@@ -348,16 +327,16 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
           {/* Controles de paginación mejorados */}
           {filteredProducts.length > ITEMS_PER_PAGE && (
             <div className="mt-12 mb-8">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 bg-gradient-to-r from-[#F0F3F1] to-[#E2E7E3] dark:from-[#455C47] dark:to-[#3F5C43] rounded-lg border border-[#DADADA] dark:border-[#334B37]">
                 {/* Información de paginación */}
                 <div className="text-center sm:text-left">
-                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Página <span className="font-bold text-blue-600 dark:text-blue-400">{currentPage}</span> de{" "}
-                    <span className="font-bold text-blue-600 dark:text-blue-400">
+                  <p className="text-sm font-medium text-[#6B6B6B] dark:text-[#FFFFFF]">
+                    Página <span className="font-bold text-[#4F6F52] dark:text-[#C26D4A]">{currentPage}</span> de{" "}
+                    <span className="font-bold text-[#4F6F52] dark:text-[#C26D4A]">
                       {Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)}
                     </span>
                   </p>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  <p className="text-xs text-[#6B6B6B] dark:text-[#E2E7E3] mt-1">
                     {Math.min(currentPage * ITEMS_PER_PAGE, filteredProducts.length)} de {filteredProducts.length}{" "}
                     {filteredProducts.length === 1 ? "producto" : "productos"}
                   </p>

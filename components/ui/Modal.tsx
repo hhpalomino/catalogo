@@ -44,16 +44,16 @@ export default function Modal({
         }
       }}
     >
-      <div className={`bg-white dark:bg-slate-800 rounded-lg shadow-2xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}>
+      <div className={`bg-white dark:bg-[#2E2E2E] rounded-lg shadow-2xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}>
         {/* Header */}
-        <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <div className="sticky top-0 bg-white dark:bg-[#2E2E2E] border-b border-[#DADADA] dark:border-[#415543] px-6 py-4 flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-[#2E2E2E] dark:text-white">
             {title}
           </h2>
           {showCloseButton && (
             <button
               onClick={onClose}
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              className="text-[#6B6B6B] hover:text-[#2E2E2E] dark:text-[#DADADA] dark:hover:text-white transition-colors"
               aria-label="Cerrar modal"
             >
               <FontAwesomeIcon icon={faTimes} size="lg" />

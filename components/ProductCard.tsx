@@ -88,7 +88,7 @@ export default function ProductCard({ product, isAdmin = false, onEdit }: Produc
         // cursor-pointer: cambia el cursor a manita
         // transition-shadow: anima cambios de sombra
         // hover:shadow-lg: sombra grande al pasar mouse
-        className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 relative overflow-hidden bg-white dark:bg-gray-900 cursor-pointer transition-shadow hover:shadow-lg"
+        className="border border-[#DADADA] dark:border-[#455C47] rounded-lg p-4 relative overflow-hidden bg-white dark:bg-[#2E2E2E] cursor-pointer transition-shadow hover:shadow-lg"
       >
         {/* Badge con el estado del producto */}
         {/* absolute: posicionamiento absoluto */}
@@ -107,7 +107,7 @@ export default function ProductCard({ product, isAdmin = false, onEdit }: Produc
               e.stopPropagation();
               onEdit(product.id);
             }}
-            className="absolute top-3 right-3 z-10 bg-blue-600 hover:bg-blue-700 !text-white p-2 rounded-lg shadow-md transition-colors"
+            className="absolute top-3 right-3 z-10 bg-[#4F6F52] hover:bg-[#3F5C43] !text-white p-2 rounded-lg shadow-md transition-colors"
             title="Editar producto"
           >
             <FontAwesomeIcon icon={faPencil} size="sm" />
@@ -153,7 +153,7 @@ export default function ProductCard({ product, isAdmin = false, onEdit }: Produc
         {/* font-semibold: peso 600 */}
         {/* mb-1: margen inferior pequeño (0.25rem) */}
         {/* line-clamp-2: máximo 2 líneas, corta con ... si es muy largo */}
-        <h2 className="text-base font-semibold mb-1 line-clamp-2">
+        <h2 className="text-base font-semibold mb-1 line-clamp-2 text-[#2E2E2E] dark:text-white">
           {product.title}
         </h2>
 

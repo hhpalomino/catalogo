@@ -66,13 +66,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       {/* Botón para volver al catálogo */}
       {/* inline-block: se muestra en línea pero se puede estilizar */}
       {/* mb-6: margen inferior 1.5rem */}
-      {/* text-blue-500: texto azul */}
-      {/* hover:text-blue-600: azul más oscuro al pasar mouse */}
+      {/* text-[#4F6F52]: texto olive */}
+      {/* hover:text-[#3F5C43]: olive más oscuro al pasar mouse */}
       {/* text-sm: tamaño pequeño */}
       {/* transition-colors: anima cambios de color */}
       <Link
         href="/"
-        className="inline-block mb-6 text-blue-500 hover:text-blue-600 text-sm transition-colors"
+        className="inline-block mb-6 text-[#4F6F52] hover:text-[#3F5C43] text-sm transition-colors"
       >
         ← Volver al catálogo
       </Link>
@@ -117,10 +117,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           {/* Precio del producto */}
           {/* text-4xl: 36px */}
           {/* font-bold: peso 700 */}
-          {/* text-blue-500: azul */}
-          {/* dark:text-blue-400: azul más claro en dark mode */}
+          {/* text-[#C26D4A]: terracotta (color destacado de marca) */}
+          {/* dark:text-[#E3BDAD]: terracotta más claro en dark mode */}
           {/* mb-8: margen inferior 2rem */}
-          <p className="text-4xl font-bold text-blue-500 dark:text-blue-400 mb-8">
+          <p className="text-4xl font-bold text-[#C26D4A] dark:text-[#E3BDAD] mb-8">
             ${formatPriceCLP(product.price)}
           </p>
 

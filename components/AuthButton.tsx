@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog, faUserShield, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 
 interface AuthButtonProps {
@@ -81,7 +81,8 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
       await fetch("/api/admin/logout", { method: "POST" });
       toast.success("✅ Sesión cerrada");
       setIsAdmin(false);
-      router.refresh();
+      // Forzar recarga completa para que el middleware se ejecute
+      window.location.href = "/";
     } catch (err) {
       console.error("Error al cerrar sesión:", err);
       toast.error("❌ Error al cerrar sesión");
@@ -92,22 +93,31 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
   if (isAdmin) {
     return (
       <div className="flex items-center gap-3">
-        <span className="text-sm text-gray-700 font-medium">
-          Hola {loggedUsername}
-        </span>
-        
-        <button
-          onClick={() => router.push("/admin")}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors cursor-pointer"
-          aria-label="Panel de administración"
-          title="Panel de administración"
-        >
-          <FontAwesomeIcon icon={faUserShield} className="text-base" />
-        </button>
+        {/* Navegación */}
+        <nav className="hidden sm:flex items-center gap-2">
+          <button
+            onClick={() => router.push("/")}
+            className="px-4 py-2 text-sm font-medium text-[#4F6F52] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] rounded-lg transition-colors"
+          >
+            Catálogo
+          </button>
+          <button
+            onClick={() => router.push("/admin")}
+            className="px-4 py-2 text-sm font-medium text-[#4F6F52] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] rounded-lg transition-colors"
+          >
+            Administración
+          </button>
+        </nav>
 
+        {/* Nombre de usuario */}
+        <span className="hidden sm:inline-block text-sm font-semibold text-[#2E2E2E] dark:text-white px-3 py-1 bg-[#F5F3EF] dark:bg-[#455C47] rounded-lg">
+          {loggedUsername}
+        </span>
+
+        {/* Botón cerrar sesión */}
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-red-600 hover:bg-red-700 text-white transition-colors cursor-pointer"
+          className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#C0392B] hover:bg-[#A0311E] text-white transition-colors"
           aria-label="Cerrar sesión"
           title="Cerrar sesión"
         >
@@ -123,54 +133,55 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors cursor-pointer"
+        className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] transition-colors"
         aria-label="Iniciar sesión"
+        title="Iniciar sesión"
       >
         <FontAwesomeIcon
           icon={faCog}
-          className="text-gray-700 text-lg"
+          className="text-[#4F6F52] dark:text-white text-lg"
         />
       </button>
 
       {isOpen && (
         <div
           ref={popoverRef}
-          className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+          className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#2E2E2E] rounded-lg shadow-lg border border-[#DADADA] dark:border-[#415543] z-50"
         >
           <form onSubmit={handleLogin} className="p-4">
-            <h3 className="text-lg font-semibold mb-3 text-gray-800">
+            <h3 className="text-lg font-semibold mb-3 text-[#2E2E2E] dark:text-white">
               Iniciar Sesión
             </h3>
 
             {error && (
-              <div className="mb-3 p-2 bg-red-100 border border-red-300 rounded text-red-700 text-sm">
+              <div className="mb-3 p-2 bg-[#F8D7DA] dark:bg-[#5C2E2E] border border-[#C0392B] rounded text-[#C0392B] dark:text-[#F8D7DA] text-sm">
                 {error}
               </div>
             )}
 
             <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#2E2E2E] dark:text-white mb-1">
                 Usuario
               </label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white focus:outline-none focus:border-[#4F6F52] focus:ring-2 focus:ring-[#C26D4A]"
                 required
                 autoFocus
               />
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#2E2E2E] dark:text-white mb-1">
                 Contraseña
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white focus:outline-none focus:border-[#4F6F52] focus:ring-2 focus:ring-[#C26D4A]"
                 required
               />
             </div>
@@ -178,7 +189,7 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-blue-400 transition-colors font-medium"
+              className="w-full bg-[#4F6F52] text-white py-2 px-4 rounded-lg hover:bg-[#3F5C43] disabled:bg-[#6B6B6B] disabled:cursor-not-allowed transition-colors font-medium"
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </button>

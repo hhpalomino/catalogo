@@ -1,6 +1,6 @@
 {
-    "consoleninja.disable": true,
-    "consoleninja.enabled": false,
+    "console-ninja.enabled": false,
+    "console-ninja.disable": true,
     "[javascript]": {
         "editor.defaultFormatter": null
     },

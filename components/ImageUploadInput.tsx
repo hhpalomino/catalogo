@@ -162,7 +162,7 @@ export default function ImageUploadInput({
 
       {/* Loading */}
       {uploading && (
-        <div className="p-3 bg-blue-50 border border-blue-200 rounded text-blue-600 text-sm">
+        <div className="p-3 bg-[#F0F3F1] border border-[#CAD3CB] rounded text-[#4F6F52] text-sm">
           Subiendo imágenes...
         </div>
       )}

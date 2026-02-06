@@ -22,7 +22,7 @@ export default function NotFound() {
       {/* mb-4: margen inferior 1rem */}
       {/* text-emerald-600: verde sage */}
       {/* dark:text-emerald-400: verde sage más claro en dark mode */}
-      <h1 className="text-6xl md:text-7xl font-bold mb-4 text-blue-600 dark:text-blue-400">
+      <h1 className="text-6xl md:text-7xl font-bold mb-4 text-[#4F6F52] dark:text-[#C26D4A]">
         404
       </h1>
 
