@@ -24,19 +24,20 @@ model ProductStatus {
 }
 
 model Product {
-  id             String         @id @default(cuid())
+  id             String             @id @default(cuid())
   title          String
   description    String
-  condition      String         // "Excellent", "Very good", "Good", "Regular"
-  statusId       String         // Relación con ProductStatus
-  status         ProductStatus  @relation(fields: [statusId], references: [id])
-  entregado      Boolean        @default(false)
-  pagado         Boolean        @default(false)
-  price          Int            // en pesos
+  condition      String             // "Excellent", "Very good", "Good", "Regular"
+  statusId       String             // Relación con ProductStatus
+  status         ProductStatus      @relation(fields: [statusId], references: [id])
+  entregado      Boolean            @default(false)
+  pagado         Boolean            @default(false)
+  price          Int                // en pesos
   measurements   String
-  images         ProductImage[] // Relación con ProductImage
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  images         ProductImage[]     // Relación con ProductImage
+  attributes     ProductAttribute[] // Atributos del producto
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
 }
 
 model ProductImage {
@@ -62,4 +63,51 @@ model User {
   lastLogin     DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Attribute {
+  id            String             @id @default(cuid())
+  name          String             // ej: "Categoría", "Color", "Notas"
+  type          String             // "TEXT" o "SELECT"
+  required      Boolean            @default(false)
+  displayOrder  Int                @default(0) // Para ordenar en el formulario
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  
+  options       AttributeOption[]  // Opciones si es tipo SELECT
+  productValues ProductAttribute[] // Valores asignados a productos
+}
+
+model AttributeOption {
+  id            String             @id @default(cuid())
+  attributeId   String
+  value         String             // ej: "Consolas", "Juegos", "Accesorios"
+  displayOrder  Int                @default(0)
+  
+  attribute     Attribute          @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  productValues ProductAttribute[] // Productos que tienen esta opción
+  
+  @@unique([attributeId, value])
+  @@index([attributeId])
+}
+
+model ProductAttribute {
+  id          String            @id @default(cuid())
+  productId   String
+  attributeId String
+  
+  // Para tipo TEXT: se usa textValue
+  textValue   String?
+  
+  // Para tipo SELECT: se usa optionId
+  optionId    String?
+  
+  product     Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute   Attribute         @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  option      AttributeOption?  @relation(fields: [optionId], references: [id], onDelete: SetNull)
+  
+  @@unique([productId, attributeId]) // Un producto solo puede tener un valor por atributo
+  @@index([productId])
+  @@index([attributeId])
+  @@index([optionId])
 }

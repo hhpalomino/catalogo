@@ -11,6 +11,27 @@ interface UploadedImage {
   displayOrder?: number;
 }
 
+interface AttributeOption {
+  id: string;
+  value: string;
+  displayOrder: number;
+}
+
+interface Attribute {
+  id: string;
+  name: string;
+  type: "TEXT" | "SELECT";
+  required: boolean;
+  displayOrder: number;
+  options: AttributeOption[];
+}
+
+interface ProductAttributeValue {
+  attributeId: string;
+  textValue?: string | null;
+  optionId?: string | null;
+}
+
 type Product = {
   id?: string;
   title: string;
@@ -22,6 +43,7 @@ type Product = {
   measurements: string;
   price: number;
   images: string;
+  attributes?: ProductAttributeValue[];
 };
 
 type ProductStatus = {
@@ -46,6 +68,8 @@ export default function AdminProductForm({
   const [error, setError] = useState("");
   const [statuses, setStatuses] = useState<ProductStatus[]>([]);
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>(initialImages);
+  const [attributes, setAttributes] = useState<Attribute[]>([]);
+  const [attributeValues, setAttributeValues] = useState<Record<string, ProductAttributeValue>>({});
 
   const [form, setForm] = useState<Product>(
     initialProduct || {
@@ -58,10 +82,30 @@ export default function AdminProductForm({
       measurements: "",
       price: 0,
       images: "",
+      attributes: [],
     }
   );
 
   const conditions = ["Excellent", "Very good", "Good", "Regular"];
+
+  // Cargar atributos disponibles
+  useEffect(() => {
+    fetch('/api/attributes')
+      .then((res) => res.json())
+      .then((data) => {
+        setAttributes(data);
+        
+        // Inicializar valores de atributos si es un producto existente
+        if (initialProduct?.attributes) {
+          const values: Record<string, ProductAttributeValue> = {};
+          initialProduct.attributes.forEach((attr) => {
+            values[attr.attributeId] = attr;
+          });
+          setAttributeValues(values);
+        }
+      })
+      .catch((err) => console.error('Error loading attributes:', err));
+  }, [initialProduct]);
 
   // Cargar statuses disponibles
   useEffect(() => {
@@ -77,6 +121,17 @@ export default function AdminProductForm({
       })
       .catch((err) => console.error('Error loading statuses:', err));
   }, [form.statusId]);
+
+  const handleAttributeChange = (attributeId: string, type: "TEXT" | "SELECT", value: string) => {
+    setAttributeValues((prev) => ({
+      ...prev,
+      [attributeId]: {
+        attributeId,
+        textValue: type === "TEXT" ? value : null,
+        optionId: type === "SELECT" ? value : null,
+      },
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,6 +156,7 @@ export default function AdminProductForm({
         images: uploadedImages.length > 0 
           ? uploadedImages.map(img => img.url).join(",")
           : form.images,
+        attributes: Object.values(attributeValues),
       };
 
       const response = await fetch(url, {
@@ -256,6 +312,52 @@ export default function AdminProductForm({
           </label>
         </div>
       </div>
+
+      {/* Atributos dinámicos */}
+      {attributes.length > 0 && (
+        <div className="border-t-2 border-slate-200 dark:border-slate-700 pt-6">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+            Atributos del Producto
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {attributes.map((attribute) => (
+              <div key={attribute.id}>
+                <label className="block text-sm font-medium text-slate-900 dark:text-white mb-1">
+                  {attribute.name} {attribute.required && "*"}
+                </label>
+                {attribute.type === "TEXT" ? (
+                  <input
+                    type="text"
+                    required={attribute.required}
+                    value={attributeValues[attribute.id]?.textValue || ""}
+                    onChange={(e) =>
+                      handleAttributeChange(attribute.id, "TEXT", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                    placeholder={`Ingresa ${attribute.name.toLowerCase()}`}
+                  />
+                ) : (
+                  <select
+                    required={attribute.required}
+                    value={attributeValues[attribute.id]?.optionId || ""}
+                    onChange={(e) =>
+                      handleAttributeChange(attribute.id, "SELECT", e.target.value)
+                    }
+                    className="w-full px-4 py-2 border-2 border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="">Selecciona {attribute.name.toLowerCase()}</option>
+                    {attribute.options.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Imágenes */}
       <div>

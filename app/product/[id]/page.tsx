@@ -40,6 +40,12 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           displayOrder: "asc",
         },
       },
+      attributes: {
+        include: {
+          attribute: true,
+          option: true,
+        },
+      },
     },
   });
 
@@ -151,6 +157,30 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               {product.measurements}
             </p>
           </div>
+
+          {/* Sección de atributos dinámicos */}
+          {product.attributes && product.attributes.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-3">
+                Características
+              </h3>
+              <dl className="space-y-2">
+                {product.attributes.map((attr) => (
+                  <div
+                    key={attr.id}
+                    className="flex flex-col sm:flex-row sm:gap-4"
+                  >
+                    <dt className="font-medium text-gray-900 dark:text-gray-200 sm:w-1/3">
+                      {attr.attribute.name}:
+                    </dt>
+                    <dd className="text-gray-700 dark:text-gray-300 sm:w-2/3">
+                      {attr.textValue || attr.option?.value || "—"}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
 
           {/* Sección de contacto por WhatsApp */}
           {/* mt-8: margen superior 2rem */}

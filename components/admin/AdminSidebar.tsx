@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBoxOpen, faKey, faChartPie, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBoxOpen, faKey, faChartPie, faBars, faTimes, faTags } from "@fortawesome/free-solid-svg-icons";
 
 interface AdminSidebarProps {
-  currentSection: "resumen" | "productos" | "cambiar-password";
-  onSectionChange: (section: "resumen" | "productos" | "cambiar-password") => void;
+  currentSection: "resumen" | "productos" | "atributos" | "cambiar-password";
+  onSectionChange: (section: "resumen" | "productos" | "atributos" | "cambiar-password") => void;
 }
 
 export default function AdminSidebar({ currentSection, onSectionChange }: AdminSidebarProps) {
@@ -24,6 +24,12 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
       label: "Productos",
       icon: faBoxOpen,
       description: "Gestionar catálogo"
+    },
+    {
+      id: "atributos" as const,
+      label: "Atributos",
+      icon: faTags,
+      description: "Categorías y características"
     },
     {
       id: "cambiar-password" as const,

@@ -6,6 +6,7 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminProductList from "@/components/admin/AdminProductList";
+import AttributeManager from "@/components/admin/AttributeManager";
 import { formatPriceCLP } from "@/lib/product-ui";
 
 type Product = {
@@ -41,7 +42,7 @@ interface AdminPageClientProps {
 }
 
 export default function AdminPageClient({ products }: AdminPageClientProps) {
-  const [currentSection, setCurrentSection] = useState<"resumen" | "productos" | "cambiar-password">("resumen");
+  const [currentSection, setCurrentSection] = useState<"resumen" | "productos" | "atributos" | "cambiar-password">("resumen");
   
   // States para cambiar contraseña
   const [currentPassword, setCurrentPassword] = useState("");
@@ -236,6 +237,13 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
             {/* Products Table */}
             <div className="bg-white dark:bg-slate-800 rounded-lg shadow overflow-hidden">
               <AdminProductList products={products} />
+            </div>
+          </>
+        ) : currentSection === "atributos" ? (
+          <>
+            {/* Attributes Manager */}
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow overflow-hidden p-6">
+              <AttributeManager />
             </div>
           </>
         ) : (

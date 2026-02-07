@@ -561,6 +561,49 @@ async function seedAdmin() {
 
 // Removed products data - they are created from admin interface
 
+// Create attributes and options
+async function seedAttributes() {
+  console.log("Creating attributes...");
+  
+  // Create "Categoría" attribute
+  const categoryAttribute = await prisma.attribute.upsert({
+    where: { id: "category" },
+    update: {},
+    create: {
+      id: "category",
+      name: "Categoría",
+      type: "SELECT",
+      required: true,
+      displayOrder: 1,
+    },
+  });
+  
+  // Create category options
+  const categoryOptions = [
+    { value: "Consolas", order: 1 },
+    { value: "Juegos", order: 2 },
+    { value: "Accesorios", order: 3 },
+    { value: "Coleccionables", order: 4 },
+  ];
+  
+  for (const option of categoryOptions) {
+    await prisma.attributeOption.upsert({
+      where: {
+        id: `${categoryAttribute.id}-${option.value}`,
+      },
+      update: {},
+      create: {
+        id: `${categoryAttribute.id}-${option.value}`,
+        attributeId: categoryAttribute.id,
+        value: option.value,
+        displayOrder: option.order,
+      },
+    });
+  }
+  
+  console.log("✓ Attributes and options created");
+}
+
 async function main() {
   console.log("🌱 Comenzando a sembrear la base de datos...");
   
@@ -582,6 +625,9 @@ async function main() {
     });
   }
   console.log("✓ Product statuses created/verified");
+  
+  // Seed attributes
+  await seedAttributes();
   
   // Get default status for products
   const defaultStatus = await prisma.productStatus.findUnique({

@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Crear producto SIN imágenes primero
-    const product = await (prisma.product as any).create({
+const product = await (prisma.product as any).create({
       data: {
         title: body.title,
         description: body.description,
@@ -36,6 +36,13 @@ export async function POST(req: NextRequest) {
         condition: body.condition,
         measurements: body.measurements,
         price: parseInt(body.price),
+        attributes: body.attributes ? {
+          create: body.attributes.map((attr: any) => ({
+            attributeId: attr.attributeId,
+            textValue: attr.textValue || null,
+            optionId: attr.optionId || null,
+          })),
+        } : undefined,
       },
       include: {
         status: true,
@@ -115,7 +122,7 @@ export async function POST(req: NextRequest) {
       })),
     });
 
-    // Obtener producto completo con imágenes
+    // Obtener producto completo con imágenes y atributos
     const finalProduct = await (prisma.product as any).findUnique({
       where: { id: productId },
       include: {
@@ -123,6 +130,12 @@ export async function POST(req: NextRequest) {
         images: {
           orderBy: {
             displayOrder: "asc",
+          },
+        },
+        attributes: {
+          include: {
+            attribute: true,
+            option: true,
           },
         },
       },
@@ -147,6 +160,12 @@ export async function GET() {
         images: {
           orderBy: {
             displayOrder: "asc",
+          },
+        },
+        attributes: {
+          include: {
+            attribute: true,
+            option: true,
           },
         },
       },

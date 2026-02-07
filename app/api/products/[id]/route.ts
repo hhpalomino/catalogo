@@ -18,6 +18,12 @@ export async function GET(
             displayOrder: "asc",
           },
         },
+        attributes: {
+          include: {
+            attribute: true,
+            option: true,
+          },
+        },
       },
     });
 
@@ -159,6 +165,26 @@ export async function PUT(
       }
     }
 
+    // Manejar atributos si vienen en el body
+    if (body.attributes) {
+      // Eliminar atributos existentes
+      await prisma.productAttribute.deleteMany({
+        where: { productId: id }
+      });
+
+      // Crear nuevos atributos
+      if (body.attributes.length > 0) {
+        await prisma.productAttribute.createMany({
+          data: body.attributes.map((attr: any) => ({
+            productId: id,
+            attributeId: attr.attributeId,
+            textValue: attr.textValue || null,
+            optionId: attr.optionId || null,
+          })),
+        });
+      }
+    }
+
     const product = await prisma.product.update({
       where: { id },
       data: {
@@ -176,6 +202,12 @@ export async function PUT(
         images: {
           orderBy: {
             displayOrder: "asc",
+          },
+        },
+        attributes: {
+          include: {
+            attribute: true,
+            option: true,
           },
         },
       },
