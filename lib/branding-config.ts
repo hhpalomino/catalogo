@@ -236,8 +236,9 @@ export const getPrimaryColor = () => BRAND_CONFIG.colors.blue[500];
 
 /**
  * Obtiene el color de acento
+ * Usa coral[500] como color de acento
  */
-export const getAccentColor = () => BRAND_CONFIG.colors.accent.main;
+export const getAccentColor = () => BRAND_CONFIG.colors.coral[500];
 
 /**
  * Obtiene el logo según el modo
