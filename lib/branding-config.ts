@@ -232,7 +232,7 @@ export const BRAND_CONFIG = {
 /**
  * Obtiene el color primario
  */
-export const getPrimaryColor = () => BRAND_CONFIG.colors.primary.main;
+export const getPrimaryColor = () => BRAND_CONFIG.colors.blue[500];
 
 /**
  * Obtiene el color de acento
