@@ -121,13 +121,13 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
         <nav className="hidden sm:flex items-center gap-2">
           <button
             onClick={() => router.push("/")}
-            className="px-4 py-2 text-sm font-medium text-[#4F6F52] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium text-[#2563EB] dark:text-[#E88C76] hover:bg-[#E6EEFB] dark:hover:bg-[#18468B] rounded-lg transition-colors"
           >
             Catálogo
           </button>
           <button
             onClick={() => router.push("/admin")}
-            className="px-4 py-2 text-sm font-medium text-[#4F6F52] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium text-[#2563EB] dark:text-[#E88C76] hover:bg-[#E6EEFB] dark:hover:bg-[#18468B] rounded-lg transition-colors"
           >
             Administración
           </button>
@@ -138,11 +138,11 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
           <button
             ref={menuButtonRef}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] transition-colors"
+            className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#E6EEFB] dark:bg-[#18468B] hover:bg-[#2563EB] dark:hover:bg-[#E88C76] transition-colors"
             aria-label="Abrir menú"
             title="Abrir menú"
           >
-            <FontAwesomeIcon icon={faBars} className="text-[#4F6F52] dark:text-white text-lg" />
+            <FontAwesomeIcon icon={faBars} className="text-[#2563EB] dark:text-[#E88C76] text-lg" />
           </button>
 
           {isMenuOpen && (
@@ -198,13 +198,13 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] transition-colors"
+        className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#E6EEFB] dark:bg-[#18468B] hover:bg-[#2563EB] dark:hover:bg-[#E88C76] transition-colors"
         aria-label="Iniciar sesión"
         title="Iniciar sesión"
       >
         <FontAwesomeIcon
           icon={faCog}
-          className="text-[#4F6F52] dark:text-white text-lg"
+          className="text-[#2563EB] dark:text-[#E88C76] text-lg"
         />
       </button>
 
@@ -232,7 +232,7 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white focus:outline-none focus:border-[#4F6F52] focus:ring-2 focus:ring-[#C26D4A]"
+                className="w-full px-3 py-2 border-2 border-[#DADADA] dark:border-[#18468B] rounded-lg bg-white dark:bg-[#18468B] text-[#2E2E2E] dark:text-white focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#E88C76]"
                 required
                 autoFocus
               />
@@ -246,7 +246,7 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white focus:outline-none focus:border-[#4F6F52] focus:ring-2 focus:ring-[#C26D4A]"
+                className="w-full px-3 py-2 border-2 border-[#DADADA] dark:border-[#18468B] rounded-lg bg-white dark:bg-[#18468B] text-[#2E2E2E] dark:text-white focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#E88C76]"
                 required
               />
             </div>
@@ -254,7 +254,7 @@ export default function AuthButton({ initialIsAdmin }: AuthButtonProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#4F6F52] text-white py-2 px-4 rounded-lg hover:bg-[#3F5C43] disabled:bg-[#6B6B6B] disabled:cursor-not-allowed transition-colors font-medium"
+              className="w-full bg-[#2563EB] text-white py-2 px-4 rounded-lg hover:bg-[#18468B] disabled:bg-[#6B6B6B] disabled:cursor-not-allowed transition-colors font-medium"
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </button>

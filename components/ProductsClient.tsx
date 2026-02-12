@@ -202,8 +202,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                       px-2.5 py-1 text-xs rounded font-medium transition-all
                       ${
                         selectedFilter === filter.id
-                          ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                          : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                          ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                          : "bg-[#E6EEFB] dark:bg-[#18468B] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                       }
                     `}
                   >
@@ -221,8 +221,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setEntregadoFilter("all"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     entregadoFilter === "all"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                      : "bg-[#E6EEFB] dark:bg-[#18468B] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                   }`}
                 >
                   Todos ({initialProducts.length})
@@ -231,8 +231,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setEntregadoFilter("si"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     entregadoFilter === "si"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                   }`}
                 >
                   Sí ({initialProducts.filter(p => p.entregado).length})
@@ -241,8 +241,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setEntregadoFilter("no"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     entregadoFilter === "no"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                   }`}
                 >
                   No ({initialProducts.filter(p => !p.entregado).length})
@@ -258,8 +258,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setPagadoFilter("all"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     pagadoFilter === "all"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                      : "bg-[#E6EEFB] dark:bg-[#18468B] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                   }`}
                 >
                   Todos ({initialProducts.length})
@@ -268,8 +268,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setPagadoFilter("si"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     pagadoFilter === "si"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                      : "bg-[#E6EEFB] dark:bg-[#18468B] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                   }`}
                 >
                   Sí ({initialProducts.filter(p => p.pagado).length})
@@ -278,8 +278,8 @@ export default function ProductsClient({ initialProducts, isAdmin = false }: { i
                   onClick={() => { setPagadoFilter("no"); setCurrentPage(1); }}
                   className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
                     pagadoFilter === "no"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] text-white shadow-md"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-[#2563EB] hover:bg-[#18468B] text-white shadow-md"
+                      : "bg-[#E6EEFB] dark:bg-[#18468B] text-[#2563EB] dark:text-white hover:bg-[#2563EB] hover:text-white dark:hover:bg-[#2563EB] dark:hover:text-white"
                   }`}
                 >
                   No ({initialProducts.filter(p => !p.pagado).length})

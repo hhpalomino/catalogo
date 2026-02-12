@@ -44,7 +44,7 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
       {/* Botón móvil flotante */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#4F6F52] dark:bg-[#455C47] text-white rounded-full shadow-xl hover:bg-[#3F5C43] transition-colors"
+        className="lg:hidden fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-brand-primary text-white rounded-full shadow-xl hover:bg-brand-primary-dark transition-colors"
         aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
       >
         <FontAwesomeIcon icon={isOpen ? faTimes : faBars} size="lg" />
@@ -62,14 +62,14 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
       <aside
         className={`
           hidden lg:block sticky top-0 left-0 h-screen
-          w-64 bg-white dark:bg-[#2E2E2E] border-r-2 border-[#DADADA] dark:border-[#415543]
+          w-64 bg-[#F3F7FF] dark:bg-[#1A2233] border-r-2 border-[#D6E4FF] dark:border-[#2563EB]
         `}
       >
         <div className="p-6">
-          <h2 className="text-lg font-bold text-[#2E2E2E] dark:text-white mb-2">
+          <h2 className="text-lg font-bold text-[#2563EB] dark:text-[#E88C76] mb-2">
             Menú Admin
           </h2>
-          <p className="text-sm text-[#6B6B6B] dark:text-[#DADADA] mb-6">
+          <p className="text-sm text-[#64748B] dark:text-[#A3B0C5] mb-6">
             Gestión del sistema
           </p>
 
@@ -85,15 +85,15 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
                   w-full flex items-start gap-3 px-4 py-3 rounded-lg transition-all
                   ${
                     currentSection === item.id
-                      ? "bg-[#4F6F52] dark:bg-[#455C47] text-white shadow-md"
-                      : "text-[#2E2E2E] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47]"
+                      ? "bg-[#2563EB] text-white shadow-md"
+                      : "text-[#18468B] dark:text-[#E88C76] hover:bg-[#E6EEFB] dark:hover:bg-[#18468B]"
                   }
                 `}
               >
                 <FontAwesomeIcon
                   icon={item.icon}
                   className={`text-lg mt-0.5 ${
-                    currentSection === item.id ? "text-white" : "text-[#4F6F52] dark:text-[#C26D4A]"
+                    currentSection === item.id ? "text-white" : "text-[#2563EB] dark:text-[#E88C76]"
                   }`}
                 />
                 <div className="text-left flex-1">
@@ -102,7 +102,7 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
                     className={`text-xs mt-0.5 ${
                       currentSection === item.id
                         ? "text-white/80"
-                        : "text-[#6B6B6B] dark:text-[#DADADA]"
+                        : "text-[#64748B] dark:text-[#A3B0C5]"
                     }`}
                   >
                     {item.description}
@@ -122,19 +122,19 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
           ${isOpen ? "translate-y-0" : "translate-y-full"}
         `}
       >
-        <div className="bg-white dark:bg-[#2E2E2E] rounded-t-3xl border-t border-[#DADADA] dark:border-[#415543] shadow-2xl px-5 pt-4 pb-8">
+        <div className="bg-white dark:bg-brand-dark rounded-t-3xl border-t border-brand-border dark:border-brand-primary shadow-2xl px-5 pt-4 pb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-base font-bold text-[#2E2E2E] dark:text-white">
+              <h2 className="text-base font-bold text-brand-dark dark:text-white">
                 Menú Admin
               </h2>
-              <p className="text-xs text-[#6B6B6B] dark:text-[#DADADA]">
+              <p className="text-xs text-brand-muted dark:text-brand-light">
                 Gestión del sistema
               </p>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-[#F5F3EF] dark:bg-[#455C47]"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-brand-light dark:bg-brand-primary"
               aria-label="Cerrar menú"
             >
               <FontAwesomeIcon icon={faTimes} />
@@ -153,8 +153,8 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
                   w-full flex items-center gap-3 px-4 py-4 rounded-2xl text-left transition-colors
                   ${
                     currentSection === item.id
-                      ? "bg-[#4F6F52] dark:bg-[#455C47] text-white"
-                      : "bg-[#F5F3EF] dark:bg-[#3A4F3B] text-[#2E2E2E] dark:text-white"
+                      ? "bg-brand-primary text-white"
+                      : "bg-brand-light dark:bg-brand-accent text-brand-dark dark:text-white"
                   }
                 `}
               >
@@ -164,7 +164,7 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
                     ${
                       currentSection === item.id
                         ? "bg-white/15 text-white"
-                        : "bg-white dark:bg-[#2E2E2E] text-[#4F6F52] dark:text-[#C26D4A]"
+                        : "bg-white dark:bg-brand-dark text-brand-primary dark:text-brand-accent"
                     }
                   `}
                 >
@@ -174,7 +174,7 @@ export default function AdminSidebar({ currentSection, onSectionChange }: AdminS
                   <div className="text-sm font-semibold">{item.label}</div>
                   <div
                     className={`text-xs mt-0.5 ${
-                      currentSection === item.id ? "text-white/80" : "text-[#6B6B6B] dark:text-[#DADADA]"
+                      currentSection === item.id ? "text-white/80" : "text-brand-muted dark:text-brand-light"
                     }`}
                   >
                     {item.description}

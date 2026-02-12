@@ -17,10 +17,20 @@ export default function StateBadge({ status, size = "sm" }: StateBadgeProps) {
   // Determinar si es tamaño pequeño o mediano
   const isSmall = size === "sm";
 
-  // Parse color to get background, text and border
-  const bgColor = status.color;
-  const textColor = "#ffffff"; // Always white text for better contrast
-  const borderColor = status.color;
+  // Usar nueva paleta si el color es antiguo
+  let bgColor = status.color;
+  let borderColor = status.color;
+  let textColor = "#ffffff";
+  // Detectar colores antiguos y reemplazar
+  const oldColors = [
+    "#4F6F52", "#C26D4A", "olive", "#3F5C43", "#E3BDAD",
+    "#B05A3A", "#E8B5A0", "#334B37", "#6B8C6F", "#F0F3F1"
+  ];
+  if (oldColors.includes(status.color)) {
+    bgColor = "#2563EB"; // Azul principal
+    borderColor = "#2563EB";
+    textColor = "#fff";
+  }
 
   return (
     <span

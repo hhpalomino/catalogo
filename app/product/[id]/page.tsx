@@ -73,7 +73,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
       {/* transition-colors: anima cambios de color */}
       <Link
         href="/"
-        className="inline-block mb-6 text-[#4F6F52] hover:text-[#3F5C43] text-sm transition-colors"
+        className="inline-block mb-6 text-[#2563EB] hover:text-[#18468B] text-sm transition-colors"
       >
         ← Volver al catálogo
       </Link>
@@ -121,7 +121,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           {/* text-[#C26D4A]: terracotta (color destacado de marca) */}
           {/* dark:text-[#E3BDAD]: terracotta más claro en dark mode */}
           {/* mb-8: margen inferior 2rem */}
-          <p className="text-4xl font-bold text-[#C26D4A] dark:text-[#E3BDAD] mb-8">
+          <p className="text-4xl font-bold text-[#E88C76] dark:text-[#F0A99A] mb-8">
             ${formatPriceCLP(product.price)}
           </p>
 
@@ -165,16 +165,40 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 Características
               </h3>
               <dl className="space-y-2">
-                {product.attributes.map((attr) => (
+                {/* Agrupar atributos por attributeId */}
+                {Object.entries(
+                  product.attributes.reduce((acc: any, attr: any) => {
+                    const key = attr.attribute.id;
+                    if (!acc[key]) {
+                      acc[key] = {
+                        name: attr.attribute.name,
+                        values: [],
+                      };
+                    }
+                    const value = attr.textValue || attr.option?.value;
+                    if (value) {
+                      acc[key].values.push(value);
+                    }
+                    return acc;
+                  }, {})
+                ).map(([attrId, data]: [string, any]) => (
                   <div
-                    key={attr.id}
+                    key={attrId}
                     className="flex flex-col sm:flex-row sm:gap-4"
                   >
                     <dt className="font-medium text-gray-900 dark:text-gray-200 sm:w-1/3">
-                      {attr.attribute.name}:
+                      {data.name}:
                     </dt>
-                    <dd className="text-gray-700 dark:text-gray-300 sm:w-2/3">
-                      {attr.textValue || attr.option?.value || "—"}
+                    <dd className="sm:w-2/3 flex flex-wrap gap-2 items-center">
+                      {data.values.map((val: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center gap-1 px-3 py-1 bg-brand-pill rounded-full text-sm font-semibold border border-brand-primary"
+                          style={{ minHeight: 32 }}
+                        >
+                          {val}
+                        </span>
+                      ))}
                     </dd>
                   </div>
                 ))}
@@ -216,18 +240,19 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 href={`https://wa.me/56991594818?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#04b948] hover:bg-[#039e3a] text-white !text-white font-semibold rounded-lg shadow-sm transition-colors"
               >
-                💬 Escribir a Tito
+                <img src="/images/icons/whatsapp-white.svg" alt="WhatsApp" className="w-6 h-6" />
+                Escribir a Tito
               </a>
-              {/* Botón WhatsApp para Nati - verde sage */}
               <a
                 href={`https://wa.me/56996990301?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(product.title)}%20%24${formatPriceCLP(product.price)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#04b948] hover:bg-[#039e3a] text-white !text-white font-semibold rounded-lg shadow-sm transition-colors"
               >
-                💬 Escribir a Nati
+                <img src="/images/icons/whatsapp-white.svg" alt="WhatsApp" className="w-6 h-6" />
+                Escribir a Nati
               </a>
             </div>
           </div>

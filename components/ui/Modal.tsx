@@ -16,13 +16,15 @@ interface ModalProps {
   children: ReactNode;
   size?: "sm" | "md" | "lg" | "xl";
   showCloseButton?: boolean;
+  fullscreenMobile?: boolean;
 }
 
 const sizeClasses = {
   sm: "max-w-md",
   md: "max-w-2xl",
-  lg: "max-w-3xl",
-  xl: "max-w-5xl",
+  lg: "max-w-4xl",
+  xl: "max-w-6xl",
+  xxl: "max-w-7xl",
 };
 
 export default function Modal({
@@ -32,6 +34,7 @@ export default function Modal({
   children,
   size = "md",
   showCloseButton = true,
+  fullscreenMobile = false,
 }: ModalProps) {
   if (!isOpen) return null;
 
@@ -44,9 +47,14 @@ export default function Modal({
         }
       }}
     >
-      <div className={`bg-white dark:bg-[#2E2E2E] rounded-lg shadow-2xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto`}>
+      <div
+        className={`bg-white dark:bg-[#2E2E2E] shadow-2xl w-full ${sizeClasses[size] || ''} max-h-[90vh] overflow-y-auto px-1 sm:px-10 p-6
+        ${fullscreenMobile ? 'rounded-none h-screen w-screen max-w-none max-h-none fixed top-0 left-0 z-50 sm:rounded-lg sm:max-h-[90vh] sm:w-full sm:static' : 'rounded-lg'}
+        `}
+        style={{ touchAction: 'auto', WebkitOverflowScrolling: 'touch' }}
+      >
         {/* Header */}
-        <div className="sticky top-0 bg-white dark:bg-[#2E2E2E] border-b border-[#DADADA] dark:border-[#415543] px-6 py-4 flex justify-between items-center">
+        <div className="sticky top-0 bg-white dark:bg-[#2E2E2E] border-b border-[#DADADA] dark:border-[#415543] px-4 sm:px-6 py-4 flex justify-between items-center">
           <h2 className="text-2xl font-bold text-[#2E2E2E] dark:text-white">
             {title}
           </h2>
@@ -62,9 +70,7 @@ export default function Modal({
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );

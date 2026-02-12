@@ -6,6 +6,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HydrationDebug from "@/components/HydrationDebug";
 
 config.autoAddCss = false;
 
@@ -35,7 +36,9 @@ export default function RootLayout({
         <div className="flex-1">
           {children}
         </div>
-        <Footer />
+        <HydrationDebug>
+          <Footer />
+        </HydrationDebug>
       </body>
     </html>
   );

@@ -2,7 +2,7 @@
 
 export default function IntroductionBanner() {
   return (
-    <div className="w-full bg-[#4F6F52] dark:bg-[#3F5C43] py-16 shadow-lg">
+    <div className="w-full bg-[#2563EB] dark:bg-[#18468B] py-16 shadow-lg">
       <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center">
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4 drop-shadow-lg">
@@ -19,24 +19,24 @@ export default function IntroductionBanner() {
               href="https://wa.me/56996990301?text=Hola%20Nati%2C%20te%20escribo%20desde%20Garage%20Market"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-[#2E2E2E] hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] text-[#4F6F52] dark:text-white font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl hover:scale-105 duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#04b948] hover:bg-[#039e3a] text-white font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl hover:scale-105 duration-300"
             >
-              <span className="text-2xl">💬</span>
+              <img src="/images/icons/whatsapp-white.svg" alt="WhatsApp" className="w-7 h-7" />
               <div className="text-left">
-                <div className="font-bold">Escribir a Nati</div>
-                <div className="text-sm font-semibold text-[#C26D4A]">(+56 9 9699 0301)</div>
+                <div className="font-bold text-white">Escribir a Nati</div>
+                <div className="text-sm font-semibold text-white">(+56 9 9699 0301)</div>
               </div>
             </a>
             <a
               href="https://wa.me/56991594818?text=Hola%20Tito%2C%20te%20escribo%20desde%20Garage%20Market"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-[#2E2E2E] hover:bg-[#F5F3EF] dark:hover:bg-[#455C47] text-[#4F6F52] dark:text-white font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl hover:scale-105 duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#04b948] hover:bg-[#039e3a] text-white font-bold rounded-xl transition-all shadow-xl hover:shadow-2xl hover:scale-105 duration-300"
             >
-              <span className="text-2xl">💬</span>
+              <img src="/images/icons/whatsapp-white.svg" alt="WhatsApp" className="w-7 h-7" />
               <div className="text-left">
-                <div className="font-bold">Escribir a Tito</div>
-                <div className="text-sm font-semibold text-[#C26D4A]">(+56 9 9159 4818)</div>
+                <div className="font-bold text-white">Escribir a Tito</div>
+                <div className="text-sm font-semibold text-white">(+56 9 9159 4818)</div>
               </div>
             </a>
           </div>

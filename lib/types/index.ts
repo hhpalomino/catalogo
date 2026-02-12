@@ -14,7 +14,7 @@ export interface Product {
   condition: ProductCondition;
   measurements: string;
   price: number;
-  images: string;
+  images: ProductImage[];
   createdAt?: Date;
   updatedAt?: Date;
 }

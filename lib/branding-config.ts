@@ -28,79 +28,55 @@ export const BRAND_CONFIG = {
   // COLORES - PALETA PRINCIPAL
   // ──────────────────────────────────────────────────────────────────────────
   colors: {
-    // Primario (Olive/Verde)
-    primary: {
-      main: "#4F6F52",
-      hover: "#3F5C43",
-      pressed: "#334B37",
-      light: "#6B8C6F",
-      lighter: "#F0F3F1",
+    // Paleta azul principal
+    blue: {
+      900: "#143A73",
+      800: "#18468B",
+      700: "#1B54A6",
+      600: "#1F63B3",
+      500: "#2563EB",
+      300: "#79A8F2",
+      100: "#D6E4FF",
     },
-
-    // Acento (Terracotta/Naranja)
-    accent: {
-      main: "#C26D4A",
-      hover: "#B05A3A",
-      light: "#E8B5A0",
+    // Coral acento UI
+    coral: {
+      400: "#F2A698",
+      500: "#E88C76",
     },
-
-    // Neutral (Charcoal - Dark Mode)
-    neutral: {
-      charcoal: "#2E2E2E",
-      darkBg: "#2E2E2E",
-      darkBgAlt: "#455C47",
-      darkCardBg: "#2E2E2E",
-      darkCardBgAlt: "#455C47",
-      darkBorder: "#415543",
+    // Neutrales
+    neutrals: {
+      bg: "#FFFFFF",
+      surface: "#F6F8FB",
+      text: "#20242B",
+      textMuted: "#64748B",
+      border: "#E5E7EB",
     },
-
-    // Fondo (Sand)
-    background: {
-      main: "#F5F3EF",
-      light: "#FFFFFF",
-    },
-
-    // Texto
-    text: {
-      primary: "#2E2E2E",
-      secondary: "#6B6B6B",
-      light: "#DADADA",
-      white: "#FFFFFF",
-    },
-
-    // Bordes
-    border: {
-      main: "#DADADA",
-      dark: "#415543",
-    },
-
-    // Estados
+    // Estados UI
     states: {
-      success: "#2E7D32",
+      success: "#149E55",
       warning: "#B7791F",
-      error: "#C0392B",
-      info: "#2F6F8F",
-      successBg: "#D4EDDA",
-      errorBg: "#F8D7DA",
+      danger: "#D14343",
+      info: "#0EA5E9",
     },
-
-    // Específicos por estado de producto
-    product: {
-      pending: {
-        text: "text-yellow-600",
-        bg: "bg-yellow-50",
-        badge: "#B7791F",
+    // Overrides para modo oscuro
+    darkOverrides: {
+      bg: "#0B1020",
+      surface: "#0F1526",
+      text: "#E6EBF5",
+      textMuted: "#A3B0C5",
+      border: "#25304A",
+      blue: {
+        900: "#0F2E5E",
+        800: "#17417F",
+        700: "#1B54A6",
+        600: "#2C73D2",
+        500: "#4F83FF",
+        300: "#8FB3FF",
+        100: "#BFD2FF",
       },
-      available: {
-        text: "text-green-600",
-        bg: "bg-green-50",
-        badge: "#2E7D32",
-      },
-      sold: {
-        text: "text-[#4F6F52]",
-        bg: "bg-[#F0F3F1]",
-        darkBg: "dark:bg-[#455C47]",
-        badge: "#4F6F52",
+      coral: {
+        400: "#F0A99A",
+        500: "#E8917D",
       },
     },
   },
@@ -111,15 +87,15 @@ export const BRAND_CONFIG = {
   logos: {
     // Logo para modo claro
     lightMode: {
-      src: "/logos/gm-icon-light.svg",
-      alt: "Garage Market Logo",
+      src: "/logos/logo-light.png",
+      alt: "Garage Market Logo claro",
       width: 48,
       height: 48,
     },
     // Logo para modo oscuro
     darkMode: {
-      src: "/logos/gm-icon-dark.svg",
-      alt: "Garage Market Logo",
+      src: "/logos/logo-dark.png",
+      alt: "Garage Market Logo oscuro",
       width: 48,
       height: 48,
     },

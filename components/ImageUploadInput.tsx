@@ -28,10 +28,11 @@ export default function ImageUploadInput({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string>("");
 
-  // Actualizar imágenes cuando cambien las iniciales (incluso si es un array vacío)
+  // Solo inicializar imágenes una vez al montar
   useEffect(() => {
     setImages(initialImages);
-  }, [initialImages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFileSelect = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,50 +130,12 @@ export default function ImageUploadInput({
   }, [images, handleImagesChange]);
 
   return (
-    <div className="space-y-4">
-      {/* Upload input */}
-      <div className="relative">
-        <label className="flex items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
-          <div className="flex flex-col items-center">
-            <FontAwesomeIcon icon={faCloud} className="w-8 h-8 text-gray-400 mb-2" />
-            <span className="text-sm font-medium text-gray-700">
-              Arrastra o haz clic para subir fotos
-            </span>
-            <span className="text-xs text-gray-500">
-              JPG, PNG o WebP. Máximo 5MB
-            </span>
-          </div>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFileSelect}
-            disabled={uploading}
-            className="hidden"
-          />
-        </label>
-      </div>
+    <div className="space-y-6">
+      <h3 className="text-base font-semibold text-gray-900 mb-2">Fotos del producto</h3>
 
-      {/* Error */}
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded text-red-600 text-sm">
-          {error}
-        </div>
-      )}
-
-      {/* Loading */}
-      {uploading && (
-        <div className="p-3 bg-[#F0F3F1] border border-[#CAD3CB] rounded text-[#4F6F52] text-sm">
-          Subiendo imágenes...
-        </div>
-      )}
-
-      {/* Galería de imágenes subidas */}
+      {/* Galería de imágenes existentes */}
       {images.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-sm font-medium text-gray-700">
-            Imágenes ({images.length})
-          </h3>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {images.map((image) => (
               <div key={image.id} className="relative group">
@@ -189,7 +152,6 @@ export default function ImageUploadInput({
                     </div>
                   )}
                 </div>
-
                 {/* Controles */}
                 <div className="absolute bottom-0 left-0 right-0 bg-black/70 opacity-0 group-hover:opacity-100 transition p-2 flex gap-2">
                   {!image.isMain && (
@@ -211,6 +173,48 @@ export default function ImageUploadInput({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Separador visual */}
+      <div className="border-t border-gray-200 my-2" />
+
+      {/* Área para subir nuevas fotos */}
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700 mb-1">Agregar nuevas fotos</label>
+        <label className="flex items-center justify-center w-full p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition">
+          <div className="flex flex-col items-center">
+            <FontAwesomeIcon icon={faCloud} className="w-8 h-8 text-gray-400 mb-2" />
+            <span className="text-sm font-medium text-gray-700">
+              Arrastra o haz clic para agregar fotos
+            </span>
+            <span className="text-xs text-gray-500">
+              JPG, PNG o WebP. Máximo 5MB por imagen
+            </span>
+          </div>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileSelect}
+            disabled={uploading}
+            className="hidden"
+          />
+        </label>
+        <p className="text-xs text-gray-500 mt-1">Puedes agregar más fotos en cualquier momento.</p>
+      </div>
+
+      {/* Error */}
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded text-red-600 text-sm">
+          {error}
+        </div>
+      )}
+
+      {/* Loading */}
+      {uploading && (
+        <div className="p-3 bg-[#F0F3F1] border border-[#CAD3CB] rounded text-[#4F6F52] text-sm">
+          Subiendo imágenes...
         </div>
       )}
     </div>

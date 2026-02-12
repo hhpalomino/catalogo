@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { productStatusApi, productApi } from "@/lib/api";
 import type { ProductStatus, Product } from "@/lib/types";
 
@@ -103,23 +103,24 @@ export function useProduct(productId: string | null) {
  * Hook genérico para manejo de estado de formularios
  */
 export function useFormState<T>(initialState: T) {
+  const initialStateRef = useRef(initialState);
   const [form, setForm] = useState<T>(initialState);
   const [dirty, setDirty] = useState(false);
 
-  const updateField = <K extends keyof T>(field: K, value: T[K]) => {
+  const updateField = useCallback(<K extends keyof T>(field: K, value: T[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setDirty(true);
-  };
+  }, []);
 
-  const resetForm = (newState?: T) => {
-    setForm(newState || initialState);
+  const resetForm = useCallback((newState?: T) => {
+    setForm(newState || initialStateRef.current);
     setDirty(false);
-  };
+  }, []);
 
-  const setFormData = (data: T) => {
+  const setFormData = useCallback((data: T) => {
     setForm(data);
     setDirty(false);
-  };
+  }, []);
 
   return {
     form,

@@ -5,7 +5,7 @@ import { isAuthenticated } from "@/lib/auth";
 // DELETE /api/attributes/[id]/options/[optionId] - Eliminar opción
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; optionId: string } }
+  { params }: { params: Promise<{ id: string; optionId: string }> }
 ) {
   const authenticated = await isAuthenticated();
   if (!authenticated) {
@@ -13,8 +13,9 @@ export async function DELETE(
   }
 
   try {
+    const { optionId } = await params;
     await prisma.attributeOption.delete({
-      where: { id: params.optionId },
+      where: { id: optionId },
     });
 
     return NextResponse.json({ success: true });
@@ -30,7 +31,7 @@ export async function DELETE(
 // PUT /api/attributes/[id]/options/[optionId] - Actualizar opción
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string; optionId: string } }
+  { params }: { params: Promise<{ id: string; optionId: string }> }
 ) {
   const authenticated = await isAuthenticated();
   if (!authenticated) {
@@ -38,11 +39,12 @@ export async function PUT(
   }
 
   try {
+    const { optionId } = await params;
     const body = await request.json();
     const { value, displayOrder } = body;
 
     const option = await prisma.attributeOption.update({
-      where: { id: params.optionId },
+      where: { id: optionId },
       data: {
         value,
         displayOrder,

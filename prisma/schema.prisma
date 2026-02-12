@@ -106,7 +106,7 @@ model ProductAttribute {
   attribute   Attribute         @relation(fields: [attributeId], references: [id], onDelete: Cascade)
   option      AttributeOption?  @relation(fields: [optionId], references: [id], onDelete: SetNull)
   
-  @@unique([productId, attributeId]) // Un producto solo puede tener un valor por atributo
+  // Permite múltiples valores por atributo (ej: múltiples categorías)
   @@index([productId])
   @@index([attributeId])
   @@index([optionId])

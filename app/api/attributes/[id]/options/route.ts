@@ -5,7 +5,7 @@ import { isAuthenticated } from "@/lib/auth";
 // POST /api/attributes/[id]/options - Crear opción para atributo
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authenticated = await isAuthenticated();
   if (!authenticated) {
@@ -13,12 +13,13 @@ export async function POST(
   }
 
   try {
+    const { id } = await params;
     const body = await request.json();
     const { value, displayOrder } = body;
 
     const option = await prisma.attributeOption.create({
       data: {
-        attributeId: params.id,
+        attributeId: id,
         value,
         displayOrder: displayOrder || 0,
       },

@@ -107,7 +107,7 @@ export default function ProductCard({ product, isAdmin = false, onEdit }: Produc
               e.stopPropagation();
               onEdit(product.id);
             }}
-            className="absolute top-3 right-3 z-10 bg-[#4F6F52] hover:bg-[#3F5C43] !text-white p-2 rounded-lg shadow-md transition-colors"
+            className="absolute top-3 right-3 z-10 bg-[#2563EB] hover:bg-[#18468B] text-white p-2 rounded-lg shadow-md transition-colors"
             title="Editar producto"
           >
             <FontAwesomeIcon icon={faPencil} size="sm" />

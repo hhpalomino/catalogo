@@ -13,7 +13,7 @@ export default function AdminHeader() {
       <div className="flex items-center justify-end gap-2 mb-8">
         <button
           onClick={() => setShowPasswordModal(true)}
-          className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] text-[#2E2E2E] dark:text-[#FFFFFF] font-medium rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-brand-accent dark:bg-brand-primary hover:bg-brand-light dark:hover:bg-brand-primary-dark text-brand-dark dark:text-white font-medium rounded-lg transition-colors"
           title="Cambiar contraseña"
         >
           <FontAwesomeIcon icon={faKey} size="sm" />

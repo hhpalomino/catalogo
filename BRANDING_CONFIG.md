@@ -26,35 +26,61 @@ Si la guía de marca cambia, **solo tienes que editar ese archivo** y toda la ap
 
 ## 🎯 CAMBIOS RÁPIDOS
 
-### 1️⃣ Cambiar Colores Primarios
-**Ubicación**: `BRAND_CONFIG.colors.primary`
+### 1️⃣ Cambiar Paleta Azul/Coral
+**Ubicación**: `BRAND_CONFIG.colors`
 
 ```typescript
-primary: {
-  main: "#4F6F52",        // Color principal (botones, headers)
-  hover: "#3F5C43",       // Color al pasar ratón
-  pressed: "#334B37",     // Color al presionar
-  light: "#6B8C6F",       // Versión más clara
-  lighter: "#F0F3F1",     // Versión muy clara para fondos
-}
+blue: {
+  900: "#143A73",
+  800: "#18468B",
+  700: "#1B54A6",
+  600: "#1F63B3",
+  500: "#2563EB",
+  300: "#79A8F2",
+  100: "#D6E4FF",
+},
+coral: {
+  400: "#F2A698",
+  500: "#E88C76",
+},
+neutrals: {
+  bg: "#FFFFFF",
+  surface: "#F6F8FB",
+  text: "#20242B",
+  textMuted: "#64748B",
+  border: "#E5E7EB",
+},
+states: {
+  success: "#149E55",
+  warning: "#B7791F",
+  danger: "#D14343",
+  info: "#0EA5E9",
+},
+darkOverrides: {
+  bg: "#0B1020",
+  surface: "#0F1526",
+  text: "#E6EBF5",
+  textMuted: "#A3B0C5",
+  border: "#25304A",
+  blue: {
+    900: "#0F2E5E",
+    800: "#17417F",
+    700: "#1B54A6",
+    600: "#2C73D2",
+    500: "#4F83FF",
+    300: "#8FB3FF",
+    100: "#BFD2FF",
+  },
+  coral: {
+    400: "#F0A99A",
+    500: "#E8917D",
+  },
+},
 ```
 
-> **Ejemplo**: Para cambiar de verde a azul, actualiza `#4F6F52` a tu nuevo color azul.
+> **Ejemplo**: Para cambiar el azul principal, actualiza `blue.600` y `blue.500`.
 
-### 2️⃣ Cambiar Color de Acento
-**Ubicación**: `BRAND_CONFIG.colors.accent`
-
-```typescript
-accent: {
-  main: "#C26D4A",     // Color de acento (precios, highlights)
-  hover: "#B05A3A",    // Versión más oscura
-  light: "#E8B5A0",    // Versión más clara
-}
-```
-
-> **Ejemplo**: Para cambiar de naranja a rojo, actualiza `#C26D4A` a tu nuevo color rojo.
-
-### 3️⃣ Cambiar Logo
+### 2️⃣ Cambiar Logo
 **Ubicación**: `BRAND_CONFIG.logos`
 
 ```typescript
@@ -77,18 +103,30 @@ logos: {
 > 2. Actualiza las rutas en `BRAND_CONFIG.logos`
 > 3. ¡Listo! El logo se actualizará en toda la app
 
-### 4️⃣ Cambiar Colores de Dark Mode
-**Ubicación**: `BRAND_CONFIG.colors.neutral`
+### 3️⃣ Cambiar Colores de Dark Mode
+**Ubicación**: `BRAND_CONFIG.colors.darkOverrides`
 
 ```typescript
-neutral: {
-  charcoal: "#2E2E2E",           // Fondo principal oscuro
-  darkBg: "#2E2E2E",             // Alternativo
-  darkBgAlt: "#455C47",          // Variante con verde oscuro
-  darkCardBg: "#2E2E2E",         // Fondo de tarjetas
-  darkCardBgAlt: "#455C47",      // Alternativo
-  darkBorder: "#415543",         // Bordes en modo oscuro
-}
+darkOverrides: {
+  bg: "#0B1020",
+  surface: "#0F1526",
+  text: "#E6EBF5",
+  textMuted: "#A3B0C5",
+  border: "#25304A",
+  blue: {
+    900: "#0F2E5E",
+    800: "#17417F",
+    700: "#1B54A6",
+    600: "#2C73D2",
+    500: "#4F83FF",
+    300: "#8FB3FF",
+    100: "#BFD2FF",
+  },
+  coral: {
+    400: "#F0A99A",
+    500: "#E8917D",
+  },
+},
 ```
 
 ### 5️⃣ Cambiar Tipografía
@@ -143,10 +181,45 @@ export default function MyComponent() {
 Los colores se enumeran en `app/globals.css`:
 ```css
 :root {
-  --primary: #4F6F52;      /* Toma el color de branding-config.ts */
-  --accent: #C26D4A;
-  --charcoal: #2E2E2E;
-  /* ... etc */
+  --gm-blue-900:#143A73;
+  --gm-blue-800:#18468B;
+  --gm-blue-700:#1B54A6;
+  --gm-blue-600:#1F63B3;
+  --gm-blue-500:#2563EB;
+  --gm-blue-300:#79A8F2;
+  --gm-blue-100:#D6E4FF;
+  --gm-coral-400:#F2A698;
+  --gm-coral-500:#E88C76;
+  --gm-bg:#FFFFFF;
+  --gm-surface:#F6F8FB;
+  --gm-text:#20242B;
+  --gm-text-muted:#64748B;
+  --gm-border:#E5E7EB;
+  --gm-success:#149E55;
+  --gm-warning:#B7791F;
+  --gm-danger:#D14343;
+  --gm-info:#0EA5E9;
+  --gm-radius:12px;
+  --gm-focus:0 0 0 3px rgba(37,99,235,.25);
+  --gm-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+html[data-theme="dark"]{
+  --gm-bg:#0B1020;
+  --gm-surface:#0F1526;
+  --gm-text:#E6EBF5;
+  --gm-text-muted:#A3B0C5;
+  --gm-border:#25304A;
+  --gm-blue-900:#0F2E5E;
+  --gm-blue-800:#17417F;
+  --gm-blue-700:#1B54A6;
+  --gm-blue-600:#2C73D2;
+  --gm-blue-500:#4F83FF;
+  --gm-blue-300:#8FB3FF;
+  --gm-blue-100:#BFD2FF;
+  --gm-coral-400:#F0A99A;
+  --gm-coral-500:#E8917D;
+  --gm-focus:0 0 0 3px rgba(79,131,255,.35);
+  --gm-shadow:0 8px 24px rgba(0,0,0,.35);
 }
 ```
 

@@ -37,27 +37,28 @@ export default function DeleteProductModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Eliminar Producto" size="sm">
+
       <div className="space-y-6">
         {error && (
-          <div className="p-4 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-lg">
+          <div className="p-4 bg-brand-accent text-brand-primary dark:bg-brand-primary dark:text-white rounded-lg">
             {error}
           </div>
         )}
 
         <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
-            <FontAwesomeIcon icon={faTrash} className="text-3xl text-red-600 dark:text-red-400" />
+          <div className="w-16 h-16 bg-brand-accent dark:bg-brand-primary rounded-full flex items-center justify-center">
+            <FontAwesomeIcon icon={faTrash} className="text-3xl text-brand-primary dark:text-white" />
           </div>
 
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-brand-dark dark:text-white mb-2">
               ¿Estás seguro?
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-brand-muted dark:text-brand-light">
               ¿Deseas eliminar el producto{" "}
               <span className="font-semibold">&quot;{productTitle}&quot;</span>?
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            <p className="text-sm text-brand-muted dark:text-brand-light mt-1">
               Esta acción no se puede deshacer.
             </p>
           </div>

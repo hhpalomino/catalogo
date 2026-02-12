@@ -6,11 +6,12 @@
 import { ProductCondition } from "./types";
 
 // ============ PRODUCT CONDITIONS ============
-export const PRODUCT_CONDITIONS: readonly ProductCondition[] = [
-  "Excellent",
-  "Very good",
-  "Good",
-  "Regular",
+export const PRODUCT_CONDITIONS = [
+  "Nuevo",
+  "Usado - Excelente",
+  "Usado - Bueno",
+  "Usado - Aceptable",
+  "Usado - Con detalles",
 ] as const;
 
 export const PRODUCT_CONDITIONS_ES: Record<ProductCondition, string> = {

@@ -9,6 +9,7 @@ import { faPencil, faTrash, faPlus, faStepBackward, faChevronLeft, faChevronRigh
 import EditProductModal from "@/components/admin/EditProductModal";
 import DeleteProductModal from "@/components/admin/DeleteProductModal";
 import CreateProductModal from "@/components/admin/CreateProductModal";
+import { Button } from "@/components/ui";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -128,29 +129,31 @@ export default function AdminProductList({ products }: { products: Product[] }) 
   return (
     <div>
       {/* Search y Nuevo Producto */}
-      <div className="p-4 border-b border-[#DADADA] dark:border-[#455C47] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div className="p-4 border-b border-brand-border dark:border-brand-primary flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <input
           type="text"
           placeholder="🔍 Buscar por título o ID..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full sm:max-w-md px-4 py-2 border-2 border-[#DADADA] dark:border-[#415543] rounded-lg bg-white dark:bg-[#455C47] text-[#2E2E2E] dark:text-white placeholder-[#6B6B6B] dark:placeholder-[#DADADA] focus:outline-none focus:border-[#4F6F52]"
+          className="w-full sm:max-w-md px-4 py-2 border-2 border-brand-border dark:border-brand-primary rounded-lg bg-white dark:bg-brand-primary text-brand-dark dark:text-white placeholder-brand-muted dark:placeholder-brand-light focus:outline-none focus:border-brand-primary"
         />
-        <button
+        <Button
           onClick={() => setCreateModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#4F6F52] dark:bg-[#4F6F52] hover:bg-[#3F5C43] dark:hover:bg-[#3F5C43] !text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-colors whitespace-nowrap"
+          icon={faPlus}
+          variant="primary"
+          size="md"
+          className="whitespace-nowrap"
         >
-          <FontAwesomeIcon icon={faPlus} size="sm" />
           Nuevo Producto
-        </button>
+        </Button>
       </div>
 
       {/* Filtros compactos en grid */}
-      <div className="p-4 border-b border-[#DADADA] dark:border-[#455C47]">
+      <div className="p-4 border-b border-brand-border dark:border-brand-primary">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Estado */}
           <div>
-            <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] mb-2">ESTADO</p>
+            <p className="text-xs font-semibold text-brand-muted dark:text-brand-light mb-2">ESTADO</p>
             <div className="flex flex-wrap gap-1.5">
               {filters.map((filter) => (
                 <button
@@ -160,8 +163,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                     px-2.5 py-1 rounded text-xs font-medium transition-all
                     ${
                       selectedFilter === filter.id
-                        ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                        : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                        ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                        : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                     }
                   `}
                 >
@@ -173,7 +176,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
 
           {/* Entregado */}
           <div>
-            <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] mb-2">ENTREGADO</p>
+            <p className="text-xs font-semibold text-brand-muted dark:text-brand-light mb-2">ENTREGADO</p>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setEntregadoFilter("all")}
@@ -181,8 +184,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     entregadoFilter === "all"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                      : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                   }
                 `}
               >
@@ -194,12 +197,12 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     entregadoFilter === "si"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                      : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                   }
                 `}
               >
-                Sí ({products.filter(p => p.entregado).length})
+                Sí ({products.filter((p) => p.entregado).length})
               </button>
               <button
                 onClick={() => setEntregadoFilter("no")}
@@ -207,19 +210,19 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     entregadoFilter === "no"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                      : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                   }
                 `}
               >
-                No ({products.filter(p => !p.entregado).length})
+                No ({products.filter((p) => !p.entregado).length})
               </button>
             </div>
           </div>
 
           {/* Pagado */}
           <div>
-            <p className="text-xs font-semibold text-[#6B6B6B] dark:text-[#E2E7E3] mb-2">PAGADO</p>
+            <p className="text-xs font-semibold text-brand-muted dark:text-brand-light mb-2">PAGADO</p>
             <div className="flex flex-wrap gap-1.5">
               <button
                 onClick={() => setPagadoFilter("all")}
@@ -227,8 +230,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     pagadoFilter === "all"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                      : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                   }
                 `}
               >
@@ -240,12 +243,12 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     pagadoFilter === "si"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                      : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                   }
                 `}
               >
-                Sí ({products.filter(p => p.pagado).length})
+                Sí ({products.filter((p) => p.pagado).length})
               </button>
               <button
                 onClick={() => setPagadoFilter("no")}
@@ -253,12 +256,12 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   px-2.5 py-1 rounded text-xs font-medium transition-all
                   ${
                     pagadoFilter === "no"
-                      ? "bg-[#4F6F52] hover:bg-[#3F5C43] !text-white shadow-sm"
-                      : "bg-[#E2E7E3] dark:bg-[#455C47] text-[#2E2E2E] dark:text-[#FFFFFF] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43]"
+                      ? "bg-brand-primary hover:bg-brand-primary-dark !text-white shadow-sm"
+                      : "bg-brand-accent dark:bg-brand-primary text-brand-dark dark:text-white hover:bg-brand-light dark:hover:bg-brand-primary-dark"
                   }
                 `}
               >
-                No ({products.filter(p => !p.pagado).length})
+                No ({products.filter((p) => !p.pagado).length})
               </button>
             </div>
           </div>

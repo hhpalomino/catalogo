@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Modal } from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -109,10 +109,19 @@ export default function AttributeManager() {
         : "/api/attributes";
       const method = editingAttribute ? "PUT" : "POST";
 
+      // Recalcular displayOrder basado en índice actual
+      const dataToSend = {
+        ...formData,
+        options: formData.options.map((opt, index) => ({
+          ...opt,
+          displayOrder: index,
+        })),
+      };
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
       if (!res.ok) throw new Error();
@@ -172,10 +181,7 @@ export default function AttributeManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-primary-dark dark:text-white">
-          Administrador de Atributos
-        </h2>
+      <div className="flex justify-end items-center">
         <Button
           onClick={() => handleOpenModal()}
           variant="primary"
@@ -201,15 +207,15 @@ export default function AttributeManager() {
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-primary-dark dark:text-white">
+                  <h3 className="text-lg font-semibold text-brand-dark dark:text-white">
                     {attr.name}
                     {attr.required && (
-                      <span className="ml-2 text-sm text-primary-hover">
+                      <span className="ml-2 text-sm text-brand-primary">
                         (Requerido)
                       </span>
                     )}
                   </h3>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                  <p className="text-sm text-brand-muted dark:text-brand-light mt-1">
                     Tipo: {attr.type === "TEXT" ? "Texto" : "Selección"}
                   </p>
                 </div>
@@ -237,14 +243,14 @@ export default function AttributeManager() {
 
               {attr.type === "SELECT" && attr.options.length > 0 && (
                 <div className="mt-4">
-                  <h4 className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <h4 className="text-sm font-medium text-brand-dark dark:text-brand-light mb-2">
                     Opciones:
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {attr.options.map((opt) => (
                       <span
                         key={opt.id}
-                        className="px-3 py-1 bg-primary-light dark:bg-primary-dark text-sm rounded-full"
+                        className="px-3 py-1 bg-brand-accent dark:bg-brand-primary text-sm rounded-full"
                       >
                         {opt.value}
                       </span>
@@ -350,7 +356,7 @@ export default function AttributeManager() {
                       </span>
                       <button
                         onClick={() => handleRemoveOption(index)}
-                        className="text-primary-hover hover:text-primary-pressed"
+                        className="text-brand-primary hover:text-brand-primary-dark"
                       >
                         <FontAwesomeIcon icon={faTimes} />
                       </button>

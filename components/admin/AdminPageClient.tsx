@@ -121,19 +121,33 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
         {/* Header profesional de admin */}
         <div className="-mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 bg-white dark:bg-[#2E2E2E] border-b border-[#DADADA] dark:border-[#415543] mb-10">
           <div className="flex items-center gap-3 max-w-7xl mx-auto">
-            <div className="w-10 h-10 bg-[#4F6F52] dark:bg-[#455C47] rounded-lg flex items-center justify-center text-xl font-bold text-white">
-              {currentSection === "resumen" ? "📊" : currentSection === "productos" ? "📦" : "🔐"}
+            <div className="w-10 h-10 bg-[#2563EB] dark:bg-[#E88C76] rounded-lg flex items-center justify-center text-xl font-bold text-white">
+              {currentSection === "resumen"
+                ? "📊"
+                : currentSection === "productos"
+                  ? "📦"
+                  : currentSection === "atributos"
+                    ? "🏷️"
+                    : "🔐"}
             </div>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-[#2E2E2E] dark:text-white">
-                {currentSection === "resumen" ? "Resumen General" : currentSection === "productos" ? "Gestión de Productos" : "Cambiar Contraseña"}
+                {currentSection === "resumen"
+                  ? "Resumen General"
+                  : currentSection === "productos"
+                    ? "Gestión de Productos"
+                    : currentSection === "atributos"
+                      ? "Administrador de Atributos"
+                      : "Cambiar Contraseña"}
               </h1>
               <p className="text-xs sm:text-sm text-[#6B6B6B] dark:text-[#DADADA]">
-                {currentSection === "resumen" 
-                  ? "Vista general de Garage Market" 
-                  : currentSection === "productos" 
-                    ? "Catálogo de Garage Market" 
-                    : "Actualiza tu contraseña de acceso"}
+                {currentSection === "resumen"
+                  ? "Vista general de Garage Market"
+                  : currentSection === "productos"
+                    ? "Catálogo de Garage Market"
+                    : currentSection === "atributos"
+                      ? "Categorías y características del catálogo"
+                      : "Actualiza tu contraseña de acceso"}
               </p>
             </div>
           </div>
@@ -145,6 +159,7 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
             {([
               { id: "resumen", label: "Resumen" },
               { id: "productos", label: "Productos" },
+              { id: "atributos", label: "Atributos" },
               { id: "cambiar-password", label: "Contraseña" },
             ] as const).map((item) => (
               <button
@@ -154,7 +169,7 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
                   flex-1 px-3 py-2 text-xs font-semibold rounded-lg transition-colors
                   ${
                     currentSection === item.id
-                      ? "bg-[#4F6F52] dark:bg-[#455C47] text-white"
+                      ? "bg-[#2563EB] dark:bg-[#E88C76] text-white"
                       : "text-[#2E2E2E] dark:text-white hover:bg-[#F5F3EF] dark:hover:bg-[#455C47]"
                   }
                 `}
@@ -189,10 +204,10 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Disponibles</p>
                   <div className="flex items-baseline justify-between">
-                    <p className="text-2xl sm:text-3xl font-bold text-green-600">
+                    <p className="text-2xl sm:text-3xl font-bold text-[#2563EB]">
                       {products.filter((p) => p.status.name === "disponible").length}
                     </p>
-                    <p className="text-base sm:text-lg font-semibold text-green-500">
+                    <p className="text-base sm:text-lg font-semibold text-[#2563EB]">
                       ${formatPriceCLP(products.filter((p) => p.status.name === "disponible").reduce((sum: number, p) => sum + p.price, 0))}
                     </p>
                   </div>
@@ -202,7 +217,7 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
                 <div className="bg-white dark:bg-[#455C47] p-4 rounded-lg shadow">
                   <p className="text-sm text-[#6B6B6B] dark:text-[#DADADA] mb-1">Vendidos</p>
                   <div className="flex items-baseline justify-between">
-                    <p className="text-2xl sm:text-3xl font-bold text-[#4F6F52] dark:text-white">
+                    <p className="text-2xl sm:text-3xl font-bold text-[#2563EB] dark:text-[#E88C76]">
                       {products.filter((p) => p.status.name === "vendido").length}
                     </p>
                     <p className="text-base sm:text-lg font-semibold text-[#C26D4A] dark:text-[#C26D4A]">
@@ -217,15 +232,14 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
                 {/* $ Recibido */}
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">💰 Recibido</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-emerald-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-[#2563EB]">
                     ${formatPriceCLP(products.filter((p) => p.pagado).reduce((sum: number, p) => sum + p.price, 0))}
                   </p>
                 </div>
-
                 {/* $ Pendiente de Pago */}
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">⏳ Pendiente de Pago</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-orange-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-[#E88C76]">
                     ${formatPriceCLP(products.filter((p) => p.status.name === "vendido" && !p.pagado).reduce((sum: number, p) => sum + p.price, 0))}
                   </p>
                 </div>
@@ -332,7 +346,7 @@ export default function AdminPageClient({ products }: AdminPageClientProps) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-[#4F6F52] hover:bg-[#3F5C43] disabled:bg-[#6B6B6B] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors"
+                  className="w-full bg-[#2563EB] hover:bg-[#18468B] disabled:bg-[#6B6B6B] disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors"
                 >
                   {loading ? "Cambiando..." : "Cambiar Contraseña"}
                 </button>

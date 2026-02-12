@@ -23,11 +23,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-[#4F6F52] hover:bg-[#3F5C43] active:bg-[#334B37] text-white focus:ring-2 focus:ring-[#C26D4A]",
-  secondary: "bg-[#6B6B6B] hover:bg-[#5A5A5A] text-white focus:ring-2 focus:ring-[#C26D4A]",
-  danger: "bg-[#C0392B] hover:bg-[#A0311E] text-white focus:ring-2 focus:ring-[#C26D4A]",
-  success: "bg-[#2E7D32] hover:bg-[#1E5A24] text-white focus:ring-2 focus:ring-[#C26D4A]",
-  ghost: "bg-transparent hover:bg-[#F5F3EF] dark:hover:bg-[#2E2E2E] text-[#4F6F52] dark:text-[#C26D4A] focus:ring-2 focus:ring-[#C26D4A]",
+  primary: "bg-[#2563EB] hover:bg-[#1D4ED8] active:bg-[#153B7D] text-white focus:ring-2 focus:ring-[#E88C76]",
+  secondary: "bg-[#E88C76] hover:bg-[#E26A4F] text-white focus:ring-2 focus:ring-[#2563EB]",
+  danger: "bg-[#D14343] hover:bg-[#A0311E] text-white focus:ring-2 focus:ring-[#E88C76]",
+  success: "bg-[#149E55] hover:bg-[#0F7A3D] text-white focus:ring-2 focus:ring-[#2563EB]",
+  ghost: "bg-transparent hover:bg-[#E8F0FE] dark:hover:bg-[#25304A] text-[#2563EB] dark:text-[#E88C76] focus:ring-2 focus:ring-[#E88C76]",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -36,7 +36,7 @@ const sizeClasses: Record<ButtonSize, string> = {
   lg: "px-6 py-3 text-lg",
 };
 
-export default function Button({
+export const Button = ({
   variant = "primary",
   size = "md",
   icon,
@@ -47,7 +47,7 @@ export default function Button({
   className = "",
   children,
   ...props
-}: ButtonProps) {
+}: ButtonProps) => {
   const baseClasses = "rounded-lg font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2";
   
   const classes = `
