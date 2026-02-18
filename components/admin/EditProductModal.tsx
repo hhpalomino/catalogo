@@ -7,7 +7,7 @@ import ImageUploadInput from "../ImageUploadInput";
 import { useProductStatuses, useProduct, useAsyncAction } from "@/hooks";
 import { productApi } from "@/lib/api";
 import { PRODUCT_CONDITIONS } from "@/lib/constants";
-import type { ProductInput, UploadedImage, EditProductModalProps } from "@/lib/types";
+import type { UploadedImage, EditProductModalProps } from "@/lib/types";
 
 interface Attribute {
   id: string;
@@ -23,22 +23,21 @@ interface AttributeSelectorProps {
   options: { id: string; value: string }[];
   selectedIds: string[];
   onChange: (optionId: string) => void;
+  alwaysOpen?: boolean;
 }
 
-function AttributeSelector({ label, required, options, selectedIds, onChange }: AttributeSelectorProps) {
+function AttributeSelector({ label, required, options, selectedIds, onChange, alwaysOpen }: AttributeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  
+  const openPanel = typeof alwaysOpen === "boolean" ? alwaysOpen : isOpen;
   const selectedOptions = options.filter(opt => selectedIds.includes(opt.id));
   const availableOptions = options.filter(opt => !selectedIds.includes(opt.id));
-  
+
   return (
     <div>
       <label className="block text-sm font-medium text-brand-dark dark:text-white mb-2">
         {label}
         {required && <span className="text-red-600 ml-1">*</span>}
       </label>
-      
-      {/* Pills de seleccionadas + boton Agregar */}
       <div className="flex flex-wrap items-center gap-2 mb-2">
         {selectedOptions.map((opt) => (
           <button
@@ -57,7 +56,8 @@ function AttributeSelector({ label, required, options, selectedIds, onChange }: 
             Ninguna seleccionada
           </span>
         )}
-        {availableOptions.length > 0 && (
+        {/* Mostrar siempre el botón Agregar si hay opciones disponibles */}
+        {availableOptions.length > 0 && !openPanel && (
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
@@ -67,22 +67,21 @@ function AttributeSelector({ label, required, options, selectedIds, onChange }: 
           </button>
         )}
       </div>
-
       {/* Panel desplegable */}
-      {availableOptions.length > 0 && isOpen && (
-        <div className="mt-3 p-4 bg-brand-light dark:bg-brand-dark rounded-lg border border-brand-border dark:border-brand-primary">
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {availableOptions.map((opt) => (
-              <label key={opt.id} className="flex items-center gap-2 cursor-pointer hover:bg-brand-accent dark:hover:bg-brand-primary p-2 rounded">
+      {options.length > 0 && openPanel && (
+        <div className="mt-2 p-2 bg-brand-light dark:bg-brand-dark rounded-lg border border-brand-border dark:border-brand-primary">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
+            {options.map((opt) => (
+              <label key={opt.id} className="flex items-center gap-1 cursor-pointer hover:bg-brand-accent dark:hover:bg-brand-primary p-1 rounded">
                 <input
                   type="checkbox"
-                  checked={false}
-                  onChange={() => {
+                  checked={selectedIds.includes(opt.id)}
+                  onChange={(e) => {
                     onChange(opt.id);
                   }}
-                  className="w-4 h-4 rounded border-2 border-brand-border dark:border-brand-primary accent-brand-primary"
+                  className="w-3 h-3 rounded border border-brand-border dark:border-brand-primary accent-brand-primary"
                 />
-                <span className="text-sm text-brand-dark dark:text-white">
+                <span className="text-xs text-brand-dark dark:text-white">
                   {opt.value}
                 </span>
               </label>
@@ -246,7 +245,7 @@ export default function EditProductModal({
         const submitData: any = {
           ...form,
           price: form.price === "" ? 0 : parseInt(form.price),
-          images: uploadedImages.map((img) => img.url),
+          images: uploadedImages.map((img) => img.url).join(","),
           attributes: Object.entries(attributeValues).flatMap(([attributeId, values]) => {
             const attr = attributes.find((a) => a.id === attributeId);
             // values es siempre un array ahora
@@ -438,7 +437,12 @@ export default function EditProductModal({
           </div>
         </div>
         {/* Sticky action buttons for mobile */}
-        <div className="sticky bottom-0 left-0 w-full bg-white dark:bg-[#2E2E2E] py-4 px-4 flex gap-3 border-t border-[#E5E7EB] dark:border-[#25304A] z-20 sm:static sm:border-none sm:bg-transparent sm:px-0">
+        <div className="modal-action-bar-edit fixed bottom-0 left-0 w-full bg-white dark:bg-[#2E2E2E] py-4 px-4 flex gap-3 border-t border-[#E5E7EB] dark:border-[#25304A] z-20 sm:static sm:border-none sm:bg-transparent sm:px-0">
+          <style>{`
+            @media (min-width: 640px) {
+              .modal-action-bar-edit { position: static !important; }
+            }
+          `}</style>
           <Button type="submit" fullWidth loading={loading} className="bg-[#04b948] hover:bg-[#039e3a] text-white font-semibold border-none" style={{ boxShadow: '0 2px 8px 0 #04b94822' }}>
             Guardar Cambios
           </Button>

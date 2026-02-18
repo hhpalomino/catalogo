@@ -325,7 +325,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
 
               <div className="mt-4 flex items-center gap-3">
                 <Link
-                  href={`/product/${product.id}`}
+                  href={`/product/${product.id}?from=admin`}
                   className="inline-flex items-center justify-center w-9 h-9 bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] text-[#2E2E2E] dark:text-white rounded-lg transition-colors"
                   title="Ver producto"
                 >
@@ -437,7 +437,7 @@ export default function AdminProductList({ products }: { products: Product[] }) 
                   <td className="px-4 py-3 text-sm whitespace-nowrap">
                     <div className="flex justify-center gap-3">
                       <Link
-                        href={`/product/${product.id}`}
+                        href={`/product/${product.id}?from=admin`}
                         className="inline-flex items-center justify-center w-8 h-8 bg-[#E2E7E3] dark:bg-[#455C47] hover:bg-[#CAD3CB] dark:hover:bg-[#3F5C43] text-[#2E2E2E] dark:text-[#FFFFFF] rounded-lg transition-colors"
                         title="Ver producto"
                       >
