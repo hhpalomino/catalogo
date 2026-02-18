@@ -37,6 +37,7 @@ export default async function Home() {
     id: product.id,
     title: product.title,
     description: product.description,
+    statusId: product.statusId ?? product.status?.id ?? "",
     status: {
       ...product.status,
       createdAt: product.status.createdAt ?? new Date(),
