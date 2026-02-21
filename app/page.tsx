@@ -32,8 +32,18 @@ export default async function Home() {
     },
   });
 
+  // Filtrar productos para usuarios no admin: solo mostrar productos con estado 'disponible'
+  let filteredProducts = products;
+  if (!isAdmin) {
+    filteredProducts = products.filter((product: any) => {
+      // Normalizar nombre de estado
+      const statusName = product.status?.name?.toLowerCase() || "";
+      return statusName === "disponible";
+    });
+  }
+
   // Transformar productos para que tengan la estructura esperada por el cliente
-  const transformedProducts = products.map((product: any) => ({
+  const transformedProducts = filteredProducts.map((product: any) => ({
     id: product.id,
     title: product.title,
     description: product.description,

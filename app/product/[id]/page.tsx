@@ -6,8 +6,33 @@ import { prisma } from "@/lib/prisma";
 import ProductPageClient from "@/components/ProductPageClient";
 import { isAuthenticated } from "@/lib/auth";
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function ProductPage({ params }: { params: any }) {
+  console.log("params recibido:", params);
+  let id = params?.id;
+  if (!id && typeof params?.value === "string") {
+    try {
+      const parsed = JSON.parse(params.value);
+      id = parsed.id;
+    } catch (e) {
+      id = undefined;
+    }
+  }
+  // Si params es una promesa, resolverla
+  if (!id && typeof params?.then === "function") {
+    const resolved = await params;
+    if (resolved?.id) {
+      id = resolved.id;
+    } else if (typeof resolved?.value === "string") {
+      try {
+        const parsed = JSON.parse(resolved.value);
+        id = parsed.id;
+      } catch (e) {
+        id = undefined;
+      }
+    }
+  }
+  console.log("Fetching product with ID:", id); // Debug: Verificar el ID recibido
+
   if (!id) {
     notFound();
   }
@@ -32,6 +57,13 @@ export default async function ProductPage({ params }: { params: { id: string } }
     notFound();
   }
   const isAdmin = await isAuthenticated();
+  // Si no es admin, mostrar solo productos disponibles
+  if (!isAdmin) {
+    const statusId = product.status?.id;
+    if (statusId !== "status_disponible_002") {
+      notFound();
+    }
+  }
   return <ProductPageClient product={product} isAdmin={isAdmin} />;
 }
 
