@@ -30,6 +30,9 @@ export default async function Home() {
         },
       },
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   // Filtrar productos para usuarios no admin: solo mostrar productos con estado 'disponible'
