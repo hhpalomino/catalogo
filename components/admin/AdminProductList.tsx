@@ -94,8 +94,8 @@ export default function AdminProductList({ products }: { products: Product[] }) 
   }, [products]);
 
   const filteredProducts = useMemo(() => {
-    // Ordenar por updatedAt descendente
-    const sorted = [...products].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+    // Ordenar por updatedAt descendente (usando status.updatedAt)
+    const sorted = [...products].sort((a, b) => new Date(b.status.updatedAt).getTime() - new Date(a.status.updatedAt).getTime());
     return sorted.filter((p) => {
       // Filtro por estado
       if (selectedFilter !== "all" && p.status.name !== selectedFilter) {
