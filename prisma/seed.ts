@@ -35,7 +35,7 @@ async function seedAdmin() {
     estado: "disponible",
     entregado: true,
     pagado: true,
-    condition: "Excellent",
+    condition: "Muy bueno",
     measurements: "Size 42",
     price: 45000,
     images: "/images/zapas1.jpg,/images/zapas2.jpg"
@@ -57,7 +57,7 @@ async function seedAdmin() {
     estado: "disponible",
     entregado: false,
     pagado: false,
-    condition: "Very good",
+    condition: "Como nuevo",
     measurements: "30 liters",
     price: 38000,
     images: "/images/mochila.jpg"
@@ -68,7 +68,7 @@ async function seedAdmin() {
     estado: "pendiente",
     entregado: false,
     pagado: false,
-    condition: "Good",
+    condition: "Bueno",
     measurements: "20cm x 15cm",
     price: 75000,
     images: "/images/camara.jpg"
