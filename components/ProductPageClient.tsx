@@ -15,9 +15,8 @@ interface ProductPageClientProps {
   isAdmin?: boolean;
 }
 
-export default function ProductPageClient({ product }: ProductPageClientProps) {
+ export default function ProductPageClient({ product, isAdmin = false }: ProductPageClientProps) {
   const [editOpen, setEditOpen] = useState(false);
-  const isAdmin = typeof window !== "undefined" && (window as any).isAdmin !== undefined ? (window as any).isAdmin : false;
   // Botón fijo: siempre volver al catálogo
   const backHref = "/";
   const backText = "Volver al catálogo";
