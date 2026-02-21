@@ -12,10 +12,12 @@ import EditProductModal from "@/components/admin/EditProductModal";
 import { Button } from "@/components/ui/Button";
 interface ProductPageClientProps {
   product: any;
+  isAdmin?: boolean;
 }
 
 export default function ProductPageClient({ product }: ProductPageClientProps) {
   const [editOpen, setEditOpen] = useState(false);
+  const isAdmin = typeof window !== "undefined" && (window as any).isAdmin !== undefined ? (window as any).isAdmin : false;
   // Botón fijo: siempre volver al catálogo
   const backHref = "/";
   const backText = "Volver al catálogo";
@@ -56,14 +58,16 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 <h1 className="text-3xl sm:text-4xl font-bold">
                   {product.title}
                 </h1>
-                <Button
-                  variant="primary"
-                  size="md"
-                  className="ml-4"
-                  icon={faPencil}
-                  iconPosition="left"
-                  onClick={() => setEditOpen(true)}
-                />
+                {isAdmin && (
+                  <Button
+                    variant="primary"
+                    size="md"
+                    className="ml-4"
+                    icon={faPencil}
+                    iconPosition="left"
+                    onClick={() => setEditOpen(true)}
+                  />
+                )}
               </div>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             Condición: <strong>{product.condition}</strong>

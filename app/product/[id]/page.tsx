@@ -1,14 +1,13 @@
 
+
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-
 import ProductPageClient from "@/components/ProductPageClient";
+import { isAuthenticated } from "@/lib/auth";
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-
-
-  const { id } = await params;
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   if (!id) {
     notFound();
   }
@@ -32,7 +31,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   if (!product) {
     notFound();
   }
-  return <ProductPageClient product={product} />;
+  const isAdmin = await isAuthenticated();
+  return <ProductPageClient product={product} isAdmin={isAdmin} />;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
